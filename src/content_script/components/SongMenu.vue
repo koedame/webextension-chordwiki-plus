@@ -154,6 +154,7 @@ export default {
           this.currentUrl = nextUrl;
         })
         .then(() => {
+          /* eslint-disable no-new */
           new Vue({
             el: '#chordwiki-plus-lyrics',
             components: {
