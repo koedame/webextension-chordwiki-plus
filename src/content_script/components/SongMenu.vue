@@ -71,7 +71,7 @@
 import axios from 'axios';
 import { parse } from 'node-html-parser';
 import queryString from 'query-string';
-
+import addOriginalKeyButton from '../../lib/add_original_key_button';
 export default {
   data() {
     return {
@@ -140,7 +140,7 @@ export default {
       const nextUrl = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
 
       axios.get(nextUrl).then((res) => {
-        const parsedData = parse(res.data);
+        const parsedData = parse(addOriginalKeyButton(res.data, location.search));
 
         let lyricsTag = document.querySelectorAll('.main div');
         lyricsTag = lyricsTag[lyricsTag.length - 1];
