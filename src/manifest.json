@@ -1,0 +1,32 @@
+{
+  "name": "ChordWiki Plus - ChordWikiが便利に！",
+  "description": "ChordWikiがより使いやすくなります。",
+  "version": null,
+  "manifest_version": 2,
+  "icons": {
+    "48": "icons/icon_48.png",
+    "128": "icons/icon_128.png"
+  },
+  "browser_action": {
+    "default_title": "chordwiki-plus"
+  },
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://ja.chordwiki.org/wiki.cgi?c=view*"],
+      "js": ["content_script/song_page.js"]
+    },
+    {
+      "matches": ["https://ja.chordwiki.org/*"],
+      "js": ["content_script/content_script.js"]
+    },
+    {
+      "matches": ["https://ja.chordwiki.org/wiki/*"],
+      "js": ["content_script/song_page_redirect.js"]
+    }
+  ],
+  "permissions": ["tabs"],
+  "web_accessible_resources": ["icons/*.png", "icons/*.ico", "images/*"]
+}
