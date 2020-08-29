@@ -23,6 +23,8 @@ const config = {
     filename: '[name].js',
   },
   resolve: {
+    alias: { vue: 'vue/dist/vue.esm.js' },
+
     extensions: ['.js', '.vue', '.ts', '.json'],
   },
   module: {
