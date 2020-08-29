@@ -1,5 +1,5 @@
 <template lang="pug">
-#song-menu--custom
+#chordwiki-plus-song-menu
   hr
 
   b-field
@@ -72,6 +72,9 @@ import axios from 'axios';
 import { parse } from 'node-html-parser';
 import queryString from 'query-string';
 import addOriginalKeyButton from '../../lib/add_original_key_button';
+import TransposeButton from './TransposeButton';
+import Vue from 'vue';
+
 export default {
   data() {
     return {
@@ -139,16 +142,25 @@ export default {
 
       const nextUrl = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
 
-      axios.get(nextUrl).then((res) => {
-        const parsedData = parse(addOriginalKeyButton(res.data, location.search));
+      axios
+        .get(nextUrl)
+        .then((res) => {
+          const parsedData = parse(addOriginalKeyButton(res.data, location.search));
 
-        let lyricsTag = document.querySelectorAll('.main div');
-        lyricsTag = lyricsTag[lyricsTag.length - 1];
-        lyricsTag.innerHTML = parsedData.querySelector('.main div');
+          const lyricsTag = document.getElementById('chordwiki-plus-lyrics');
+          lyricsTag.innerHTML = parsedData.querySelector('.main div');
 
-        history.replaceState('', '', nextUrl);
-        this.currentUrl = nextUrl;
-      });
+          history.replaceState('', '', nextUrl);
+          this.currentUrl = nextUrl;
+        })
+        .then(() => {
+          new Vue({
+            el: '#chordwiki-plus-lyrics',
+            components: {
+              TransposeButton,
+            },
+          });
+        });
     },
   },
 
@@ -159,7 +171,7 @@ export default {
 </script>
 
 <style lang="sass">
-#song-menu--custom
+#chordwiki-plus-song-menu
   @import "~bulma/sass/utilities/_all"
   @import "~bulma"
   @import "~buefy/src/scss/buefy"

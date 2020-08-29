@@ -14,29 +14,36 @@ Vue.use(Buefy, {
 });
 
 // import store from '../store';
-
 import Clipboard from 'v-clipboard';
 Vue.use(Clipboard);
 
-const queryString = require('query-string');
 import addOriginalKeyButton from '../lib/add_original_key_button';
 
 // 移調文字をリンク化
 document.body.innerHTML = addOriginalKeyButton(document.body.innerHTML, location.search);
+
+// 扱いやすように歌詞部分にIDを付与
+const lyrics = document.querySelector('.main > div');
+lyrics.setAttribute('id', 'chordwiki-plus-lyrics');
+lyrics.setAttribute('ref', 'chordwiki-plus-lyrics');
 
 // SongMenuをマウントする要素を追加
 let titleElement = document.querySelector('.subtitle');
 if (titleElement === null) {
   titleElement = document.querySelector('.title');
 }
-const chordwikiPlusSongMenuElement = document.createElement('div');
+const chordwikiPlusSongMenuElement = document.createElement('song-menu');
 chordwikiPlusSongMenuElement.setAttribute('id', 'chordwiki-plus-song-menu');
 titleElement.parentNode.insertBefore(chordwikiPlusSongMenuElement, titleElement.nextElementSibling);
 
 //@ts-ignore
+import TransposeButton from './components/TransposeButton';
+//@ts-ignore
 import SongMenu from './components/SongMenu';
 new Vue({
-  el: '#chordwiki-plus-song-menu',
-  // store: store,
-  render: (h) => h(SongMenu),
+  el: '.main',
+  components: {
+    TransposeButton,
+    SongMenu,
+  },
 });
