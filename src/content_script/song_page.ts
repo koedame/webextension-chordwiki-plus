@@ -25,7 +25,6 @@ chordwikiPlusSongMenuElement.setAttribute('id', 'chordwiki-plus-song-menu');
 titleElement.parentNode.insertBefore(chordwikiPlusSongMenuElement, titleElement.nextElementSibling);
 
 import Clipboard from 'v-clipboard';
-
 Vue.use(Clipboard);
 
 //@ts-ignore
