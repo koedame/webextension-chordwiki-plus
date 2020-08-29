@@ -45,7 +45,7 @@ export default {
 #scroll-afterimage
   position: absolute
   left: 0
-  background: #4f776652
+  background: #4f776624
   width: 100%
   height: 10px
 </style>
