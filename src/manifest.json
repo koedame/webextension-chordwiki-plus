@@ -27,5 +27,6 @@
       "js": ["content_script/song_page_redirect.js"]
     }
   ],
+  "permissions": ["tabs"],
   "web_accessible_resources": ["icons/*.png", "icons/*.ico", "images/*"]
 }
