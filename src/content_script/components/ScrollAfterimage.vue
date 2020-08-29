@@ -24,6 +24,9 @@ export default {
       if (this.lastPageYOffset > window.pageYOffset) {
         // 上スクロールはすぐに動かす
         this.topPosition = document.documentElement.clientHeight + window.pageYOffset - 10;
+      } else if (this.topPosition < window.pageYOffset) {
+        // はみ出したらすぐ動かす
+        this.topPosition = document.documentElement.clientHeight + window.pageYOffset - 10;
       } else {
         // 下スクロールは時間差で動かす
         this.changeTopPositionTimer = setTimeout(() => {
