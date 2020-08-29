@@ -3,32 +3,6 @@
   hr
 
   b-field
-    | 移調：
-    template(v-for='transposeKey in transposeKeys')
-      b-radio-button(
-        v-if="transposeKey.value === 0",
-        :key="`transposeKey-${transposeKey.name}`",
-        v-model='queries.key',
-        :native-value='transposeKey.value',
-        type='is-dark',
-        @input="onTransposeKey",
-        size="is-small"
-      )
-        span
-          | {{ transposeKey.name }}
-      b-radio-button(
-        v-else,
-        :key="`transposeKey-${transposeKey.name}`",
-        v-model='queries.key',
-        :native-value='transposeKey.value',
-        type='is-success',
-        @input="onTransposeKey",
-        size="is-small"
-      )
-        span
-          | {{ transposeKey.name }}
-
-  b-field
     | 表記：
     template(v-for='symbol in symbols')
       b-radio-button(
@@ -36,7 +10,7 @@
         :key="`symbol-${symbol.name}`",
         v-model='queries.symbol',
         :native-value='symbol.value',
-        type='is-dark',
+        type='is-info',
         @input="onChangeSymbol",
         size="is-small"
       )
@@ -48,12 +22,38 @@
         :key="`symbol-${symbol.name}`",
         v-model='queries.symbol',
         :native-value='symbol.value',
-        type='is-success',
+        type='is-danger',
         @input="onChangeSymbol",
         size="is-small"
       )
         span
           | {{ symbol.name }}
+
+  b-field
+    | 移調：
+    template(v-for='transposeKey in transposeKeys')
+      b-radio-button(
+        v-if="transposeKey.value === 0",
+        :key="`transposeKey-${transposeKey.name}`",
+        v-model='queries.key',
+        :native-value='transposeKey.value',
+        type='is-info',
+        @input="onTransposeKey",
+        size="is-small"
+      )
+        span
+          | {{ transposeKey.name }}
+      b-radio-button(
+        v-else,
+        :key="`transposeKey-${transposeKey.name}`",
+        v-model='queries.key',
+        :native-value='transposeKey.value',
+        type='is-danger',
+        @input="onTransposeKey",
+        size="is-small"
+      )
+        span
+          | {{ transposeKey.name }}
 
   hr
 </template>
