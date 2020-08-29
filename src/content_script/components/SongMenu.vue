@@ -27,6 +27,7 @@
         size="is-small"
       )
         span
+
           | {{ symbol.name }}
 
   b-field
@@ -65,6 +66,9 @@
         | URLをコピー
 
   hr
+
+  b-field
+    b-switch(type="is-info", size="is-small", @input="onChangeChordDiagram") コードダイアグラム
 </template>
 
 <script>
@@ -73,6 +77,7 @@ import queryString from 'query-string';
 export default {
   data() {
     return {
+      configChordDiagram: false,
       queries: {
         c: '',
         t: '',
@@ -115,9 +120,15 @@ export default {
     this.queries.t = parsedQueries.t;
     this.queries.key = parseInt(parsedQueries.key, 10);
     this.queries.symbol = parsedQueries.symbol;
+
+    this.configChordDiagram = this.$store.getters['config/chordDiagram'];
   },
 
   methods: {
+    onChangeChordDiagram(value) {
+      this.configChordDiagram = value;
+      this.$store.dispatch('config/setChordDiagram', value);
+    },
     copyUrl() {
       this.$clipboard(this.currentUrl);
       this.$refs.urlInputTag.$refs.input.select();

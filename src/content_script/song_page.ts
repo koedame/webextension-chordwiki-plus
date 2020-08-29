@@ -13,7 +13,8 @@ Vue.use(Buefy, {
   defaultIconPack: 'fas',
 });
 
-// import store from '../store';
+import store from '../store';
+
 import Clipboard from 'v-clipboard';
 Vue.use(Clipboard);
 
@@ -21,6 +22,14 @@ import addOriginalKeyButton from '../lib/add_original_key_button';
 
 // 移調文字をリンク化
 document.body.innerHTML = addOriginalKeyButton(document.body.innerHTML, location.search);
+
+// コードダイアグラムをコンポーネントに置き換え
+document.body.innerHTML = document.body.innerHTML.replace(
+  /<span class="chord" onclick="javascript:popupImage\('(\/cd\/.+?\.png)', event\);">(.+?)<\/span>/g,
+  (match, filePath, chordName) => {
+    return `<chord-diagram file-path="${filePath}" chord-name="${chordName}"></chord-diagram>`;
+  }
+);
 
 // 扱いやすように歌詞部分にIDを付与
 const lyrics = document.querySelector('.main > div');
@@ -47,11 +56,15 @@ import TransposeButton from './components/TransposeButton';
 import SongMenu from './components/SongMenu';
 //@ts-ignore
 import ScrollAfterimage from './components/ScrollAfterimage';
+//@ts-ignore
+import ChordDiagram from './components/ChordDiagram';
 new Vue({
   el: '.main',
+  store: store,
   components: {
     TransposeButton,
     SongMenu,
     ScrollAfterimage,
+    ChordDiagram,
   },
 });
