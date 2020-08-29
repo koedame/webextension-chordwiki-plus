@@ -55,6 +55,15 @@
         span
           | {{ transposeKey.name }}
 
+  b-field(label-position='on-border')
+    b-input.current-url(readonly, size="is-small", v-model="currentUrl", ref="urlInputTag")
+    p.control
+      b-button(v-if="isCopied", size="is-small", @click="copyUrl", type="is-success")
+        | ✔ コピーしました
+
+      b-button(v-else,size="is-small", @click="copyUrl")
+        | URLをコピー
+
   hr
 </template>
 
@@ -93,6 +102,11 @@ export default {
         { name: '指定なし', value: '' },
         { name: '♯表記', value: 'sharp' },
       ],
+
+      currentUrl: location.href,
+
+      isCopied: false,
+      copyTimer: null,
     };
   },
   mounted() {
@@ -104,6 +118,20 @@ export default {
   },
 
   methods: {
+    copyUrl() {
+      this.$clipboard(this.currentUrl);
+      this.$refs.urlInputTag.$refs.input.select();
+      this.isCopied = true;
+
+      if (this.copyTimer) {
+        clearTimeout(this.copyTimer);
+      }
+
+      this.copyTimer = setTimeout(() => {
+        this.isCopied = false;
+      }, 3000);
+    },
+
     onTransposeKey(value) {
       const stringifiedQuery = queryString.stringify(this.queries);
       // TODO: 再読み込みが発生しないように非同期でページを書き換えたい
@@ -116,6 +144,10 @@ export default {
       location.replace(`https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`);
     },
   },
+
+  destroyed: () => {
+    clearInterval(this.copyTimer);
+  },
 };
 </script>
 
@@ -124,4 +156,8 @@ export default {
   @import "~bulma/sass/utilities/_all"
   @import "~bulma"
   @import "~buefy/src/scss/buefy"
+
+  .current-url
+    max-width: 410px
+    width: 100%
 </style>

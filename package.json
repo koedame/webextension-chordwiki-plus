@@ -35,6 +35,7 @@
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "query-string": "^6.13.1",
+    "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
     "vue-moment": "^4.1.0",
     "vuex": "^3.0.1",
