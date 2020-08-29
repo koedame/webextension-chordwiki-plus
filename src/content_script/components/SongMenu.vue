@@ -68,12 +68,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { parse } from 'node-html-parser';
 import queryString from 'query-string';
-import addOriginalKeyButton from '../../lib/add_original_key_button';
-import TransposeButton from './TransposeButton';
-import Vue from 'vue';
 
 export default {
   data() {
@@ -142,26 +137,7 @@ export default {
 
       const nextUrl = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
 
-      axios
-        .get(nextUrl)
-        .then((res) => {
-          const parsedData = parse(addOriginalKeyButton(res.data, location.search));
-
-          const lyricsTag = document.getElementById('chordwiki-plus-lyrics');
-          lyricsTag.innerHTML = parsedData.querySelector('.main div');
-
-          history.replaceState('', '', nextUrl);
-          this.currentUrl = nextUrl;
-        })
-        .then(() => {
-          /* eslint-disable no-new */
-          new Vue({
-            el: '#chordwiki-plus-lyrics',
-            components: {
-              TransposeButton,
-            },
-          });
-        });
+      location.replace(nextUrl);
     },
   },
 
