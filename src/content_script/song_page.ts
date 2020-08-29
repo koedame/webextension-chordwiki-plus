@@ -1,5 +1,3 @@
-console.log('songpage');
-
 import Vue from 'vue';
 
 import Buefy from 'buefy';
@@ -15,7 +13,18 @@ Vue.use(Buefy, {
   defaultIconPack: 'fas',
 });
 
-// Vueをマウントする要素を追加
+// import store from '../store';
+
+import Clipboard from 'v-clipboard';
+Vue.use(Clipboard);
+
+const queryString = require('query-string');
+import addOriginalKeyButton from '../lib/add_original_key_button';
+
+// 移調文字をリンク化
+document.body.innerHTML = addOriginalKeyButton(document.body.innerHTML, location.search);
+
+// SongMenuをマウントする要素を追加
 let titleElement = document.querySelector('.subtitle');
 if (titleElement === null) {
   titleElement = document.querySelector('.title');
@@ -24,13 +33,8 @@ const chordwikiPlusSongMenuElement = document.createElement('div');
 chordwikiPlusSongMenuElement.setAttribute('id', 'chordwiki-plus-song-menu');
 titleElement.parentNode.insertBefore(chordwikiPlusSongMenuElement, titleElement.nextElementSibling);
 
-import Clipboard from 'v-clipboard';
-Vue.use(Clipboard);
-
 //@ts-ignore
 import SongMenu from './components/SongMenu';
-// import store from '../store';
-
 new Vue({
   el: '#chordwiki-plus-song-menu',
   // store: store,
