@@ -36,14 +36,22 @@ const chordwikiPlusSongMenuElement = document.createElement('song-menu');
 chordwikiPlusSongMenuElement.setAttribute('id', 'chordwiki-plus-song-menu');
 titleElement.parentNode.insertBefore(chordwikiPlusSongMenuElement, titleElement.nextElementSibling);
 
+// スクロール位置がわかるバーを表示
+const scrollAfterimageTag = document.createElement('scroll-afterimage');
+scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
+lyrics.appendChild(scrollAfterimageTag);
+
 //@ts-ignore
 import TransposeButton from './components/TransposeButton';
 //@ts-ignore
 import SongMenu from './components/SongMenu';
+//@ts-ignore
+import ScrollAfterimage from './components/ScrollAfterimage';
 new Vue({
   el: '.main',
   components: {
     TransposeButton,
     SongMenu,
+    ScrollAfterimage,
   },
 });
