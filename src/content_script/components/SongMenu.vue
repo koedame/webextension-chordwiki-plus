@@ -11,7 +11,7 @@
         v-model='queries.symbol',
         :native-value='symbol.value',
         type='is-info',
-        @input="onChangeSymbol",
+        @input="onChangeQueries",
         size="is-small"
       )
         span
@@ -23,7 +23,7 @@
         v-model='queries.symbol',
         :native-value='symbol.value',
         type='is-danger',
-        @input="onChangeSymbol",
+        @input="onChangeQueries",
         size="is-small"
       )
         span
@@ -38,7 +38,7 @@
         v-model='queries.key',
         :native-value='transposeKey.value',
         type='is-info',
-        @input="onTransposeKey",
+        @input="onChangeQueries",
         size="is-small"
       )
         span
@@ -49,7 +49,7 @@
         v-model='queries.key',
         :native-value='transposeKey.value',
         type='is-danger',
-        @input="onTransposeKey",
+        @input="onChangeQueries",
         size="is-small"
       )
         span
@@ -69,6 +69,8 @@
 
 <script>
 const queryString = require('query-string');
+import axios from 'axios';
+import { parse } from 'node-html-parser';
 
 export default {
   data() {
@@ -132,16 +134,21 @@ export default {
       }, 3000);
     },
 
-    onTransposeKey(value) {
+    onChangeQueries() {
       const stringifiedQuery = queryString.stringify(this.queries);
-      // TODO: 再読み込みが発生しないように非同期でページを書き換えたい
-      location.replace(`https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`);
-    },
 
-    onChangeSymbol(value) {
-      const stringifiedQuery = queryString.stringify(this.queries);
-      // TODO: 再読み込みが発生しないように非同期でページを書き換えたい
-      location.replace(`https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`);
+      const nextUrl = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
+
+      axios.get(nextUrl).then((res) => {
+        const parsedData = parse(res.data);
+
+        let lyricsTag = document.querySelectorAll('.main div');
+        lyricsTag = lyricsTag[lyricsTag.length - 1];
+        lyricsTag.innerHTML = parsedData.querySelector('.main div');
+
+        history.replaceState('', '', nextUrl);
+        this.currentUrl = nextUrl;
+      });
     },
   },
 
