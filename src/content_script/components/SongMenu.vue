@@ -68,9 +68,9 @@
 </template>
 
 <script>
-const queryString = require('query-string');
 import axios from 'axios';
 import { parse } from 'node-html-parser';
+import queryString from 'query-string';
 
 export default {
   data() {
