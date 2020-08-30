@@ -67,8 +67,13 @@
 
   hr
 
-  b-field
-    b-switch(type="is-info", size="is-small", @input="onChangeChordDiagram") コードダイアグラム
+  b-field(grouped)
+    .control
+      b-switch(v-model="$store.state.config.chordDiagram", type="is-info", size="is-small", @input="onChangeChordDiagram") コードダイアグラム
+
+    .control
+      b-switch(v-model="$store.state.config.scrollGuide", type="is-info", size="is-small", @input="onChangeScrollGuide")
+        | スクロールガイド
 </template>
 
 <script>
@@ -77,7 +82,6 @@ import queryString from 'query-string';
 export default {
   data() {
     return {
-      configChordDiagram: false,
       queries: {
         c: '',
         t: '',
@@ -121,13 +125,17 @@ export default {
     this.queries.key = parseInt(parsedQueries.key, 10);
     this.queries.symbol = parsedQueries.symbol;
 
-    this.configChordDiagram = this.$store.getters['config/chordDiagram'];
+    console.log(this.$store.state.config.scrollGuide);
   },
 
   methods: {
     onChangeChordDiagram(value) {
       this.configChordDiagram = value;
       this.$store.dispatch('config/setChordDiagram', value);
+    },
+    onChangeScrollGuide(value) {
+      this.configScrollGuide = value;
+      this.$store.dispatch('config/setScrollGuide', value);
     },
     copyUrl() {
       this.$clipboard(this.currentUrl);
