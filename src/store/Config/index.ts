@@ -5,40 +5,61 @@ import { ConfigState, RootState } from '../types';
 
 const state: ConfigState = {
   chordDiagram: false,
+  scrollGuide: true,
 };
 
 const getters: GetterTree<ConfigState, RootState> = {
   chordDiagram: (state) => {
     return state.chordDiagram;
   },
+  scrollGuide: (state) => {
+    return state.scrollGuide;
+  },
 };
 
 const mutations: MutationTree<ConfigState> = {
   restoreFromLocalStorage: (state) => {
     browser.storage.local
-      .get('config')
+      .get('configChordDiagram')
       //@ts-ignore
-      .then(({ config }) => {
-        Object.assign(state, config);
-      })
-      .then(() => {
-        browser.storage.local.set({
-          config: JSON.parse(JSON.stringify(state)),
-        });
+      .then(({ configChordDiagram }) => {
+        state.chordDiagram = configChordDiagram;
+      });
+
+    browser.storage.local
+      .get('configScrollGuide')
+      //@ts-ignore
+      .then(({ configScrollGuide }) => {
+        console.log('configScrollGuide', configScrollGuide);
+        state.scrollGuide = configScrollGuide;
       });
   },
   setChordDiagram: (state, value: boolean) => {
-    state.chordDiagram = value;
-
-    browser.storage.local.set({
-      config: JSON.parse(JSON.stringify(state)),
-    });
+    browser.storage.local
+      .set({
+        configChordDiagram: value,
+      })
+      .then(() => {
+        state.chordDiagram = value;
+      });
+  },
+  setScrollGuide: (state, value: boolean) => {
+    browser.storage.local
+      .set({
+        configScrollGuide: value,
+      })
+      .then(() => {
+        state.scrollGuide = value;
+      });
   },
 };
 
 const actions: ActionTree<ConfigState, RootState> = {
   setChordDiagram({ commit }, value: boolean) {
     commit('setChordDiagram', value);
+  },
+  setScrollGuide({ commit }, value: boolean) {
+    commit('setScrollGuide', value);
   },
   restoreFromLocalStorage({ commit }) {
     commit('restoreFromLocalStorage');

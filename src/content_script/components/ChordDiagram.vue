@@ -1,6 +1,6 @@
 <template lang="pug">
 span
-  .chordwiki-plus-chord-diagram(v-if="$store.getters['config/chordDiagram']")
+  .chordwiki-plus-chord-diagram(v-if="$store.state.config.chordDiagram")
     img(:src="filePath")
   .chordwiki-plus-chord-name(v-else)
     | {{ chordName }}

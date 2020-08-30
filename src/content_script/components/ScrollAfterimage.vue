@@ -1,5 +1,5 @@
 <template lang="pug">
-#scroll-afterimage(:style="{top: `${topPosition}px`}")
+#scroll-afterimage(:style="{top: `${topPosition}px`}", :class="{'scroll-afterimage-hide': !$store.state.config.scrollGuide}")
 </template>
 
 <script>
@@ -51,4 +51,6 @@ export default {
   background: #4f776624
   width: 100%
   height: 10px
+  &.scroll-afterimage-hide
+    opacity: 0
 </style>

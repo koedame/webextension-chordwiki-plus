@@ -68,3 +68,5 @@ new Vue({
     ChordDiagram,
   },
 });
+
+store.dispatch('config/restoreFromLocalStorage');
