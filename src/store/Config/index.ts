@@ -30,7 +30,6 @@ const mutations: MutationTree<ConfigState> = {
       .get('configScrollGuide')
       //@ts-ignore
       .then(({ configScrollGuide }) => {
-        console.log('configScrollGuide', configScrollGuide);
         state.scrollGuide = configScrollGuide;
       });
   },
