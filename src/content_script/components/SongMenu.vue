@@ -1,32 +1,6 @@
 <template lang="pug">
-#song-menu--custom
+#chordwiki-plus-song-menu
   hr
-
-  b-field
-    | 移調：
-    template(v-for='transposeKey in transposeKeys')
-      b-radio-button(
-        v-if="transposeKey.value === 0",
-        :key="`transposeKey-${transposeKey.name}`",
-        v-model='queries.key',
-        :native-value='transposeKey.value',
-        type='is-dark',
-        @input="onTransposeKey",
-        size="is-small"
-      )
-        span
-          | {{ transposeKey.name }}
-      b-radio-button(
-        v-else,
-        :key="`transposeKey-${transposeKey.name}`",
-        v-model='queries.key',
-        :native-value='transposeKey.value',
-        type='is-success',
-        @input="onTransposeKey",
-        size="is-small"
-      )
-        span
-          | {{ transposeKey.name }}
 
   b-field
     | 表記：
@@ -36,8 +10,8 @@
         :key="`symbol-${symbol.name}`",
         v-model='queries.symbol',
         :native-value='symbol.value',
-        type='is-dark',
-        @input="onChangeSymbol",
+        type='is-info',
+        @input="onChangeQueries",
         size="is-small"
       )
         span
@@ -48,18 +22,62 @@
         :key="`symbol-${symbol.name}`",
         v-model='queries.symbol',
         :native-value='symbol.value',
-        type='is-success',
-        @input="onChangeSymbol",
+        type='is-danger',
+        @input="onChangeQueries",
         size="is-small"
       )
         span
+
           | {{ symbol.name }}
 
+  b-field
+    | 移調：
+    template(v-for='transposeKey in transposeKeys')
+      b-radio-button(
+        v-if="transposeKey.value === 0",
+        :key="`transposeKey-${transposeKey.name}`",
+        v-model='queries.key',
+        :native-value='transposeKey.value',
+        type='is-info',
+        @input="onChangeQueries",
+        size="is-small"
+      )
+        span
+          | {{ transposeKey.name }}
+      b-radio-button(
+        v-else,
+        :key="`transposeKey-${transposeKey.name}`",
+        v-model='queries.key',
+        :native-value='transposeKey.value',
+        type='is-danger',
+        @input="onChangeQueries",
+        size="is-small"
+      )
+        span
+          | {{ transposeKey.name }}
+
+  b-field(label-position='on-border')
+    b-input.current-url(readonly, size="is-small", v-model="currentUrl", ref="urlInputTag")
+    p.control
+      b-button(v-if="isCopied", size="is-small", @click="copyUrl", type="is-success")
+        | ✔ コピーしました
+
+      b-button(v-else,size="is-small", @click="copyUrl")
+        | URLをコピー
+
   hr
+
+  b-field(grouped)
+    .control
+      b-switch(v-model="$store.state.config.chordDiagram", type="is-info", size="is-small", @input="onChangeChordDiagram") コードダイアグラム
+
+    .control
+      b-switch(v-model="$store.state.config.scrollGuide", type="is-info", size="is-small", @input="onChangeScrollGuide")
+        | スクロールガイド
 </template>
 
 <script>
-const queryString = require('query-string');
+import queryString from 'query-string';
 
 export default {
   data() {
@@ -93,6 +111,11 @@ export default {
         { name: '指定なし', value: '' },
         { name: '♯表記', value: 'sharp' },
       ],
+
+      currentUrl: location.href,
+
+      isCopied: false,
+      copyTimer: null,
     };
   },
   mounted() {
@@ -101,27 +124,55 @@ export default {
     this.queries.t = parsedQueries.t;
     this.queries.key = parseInt(parsedQueries.key, 10);
     this.queries.symbol = parsedQueries.symbol;
+
+    console.log(this.$store.state.config.scrollGuide);
   },
 
   methods: {
-    onTransposeKey(value) {
-      const stringifiedQuery = queryString.stringify(this.queries);
-      // TODO: 再読み込みが発生しないように非同期でページを書き換えたい
-      location.replace(`https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`);
+    onChangeChordDiagram(value) {
+      this.configChordDiagram = value;
+      this.$store.dispatch('config/setChordDiagram', value);
+    },
+    onChangeScrollGuide(value) {
+      this.configScrollGuide = value;
+      this.$store.dispatch('config/setScrollGuide', value);
+    },
+    copyUrl() {
+      this.$clipboard(this.currentUrl);
+      this.$refs.urlInputTag.$refs.input.select();
+      this.isCopied = true;
+
+      if (this.copyTimer) {
+        clearTimeout(this.copyTimer);
+      }
+
+      this.copyTimer = setTimeout(() => {
+        this.isCopied = false;
+      }, 3000);
     },
 
-    onChangeSymbol(value) {
+    onChangeQueries() {
       const stringifiedQuery = queryString.stringify(this.queries);
-      // TODO: 再読み込みが発生しないように非同期でページを書き換えたい
-      location.replace(`https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`);
+
+      const nextUrl = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
+
+      location.replace(nextUrl);
     },
+  },
+
+  destroyed: () => {
+    clearInterval(this.copyTimer);
   },
 };
 </script>
 
 <style lang="sass">
-#song-menu--custom
+#chordwiki-plus-song-menu
   @import "~bulma/sass/utilities/_all"
   @import "~bulma"
   @import "~buefy/src/scss/buefy"
+
+  .current-url
+    max-width: 410px
+    width: 100%
 </style>
