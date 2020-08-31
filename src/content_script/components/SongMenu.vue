@@ -124,8 +124,6 @@ export default {
     this.queries.t = parsedQueries.t;
     this.queries.key = parseInt(parsedQueries.key, 10);
     this.queries.symbol = parsedQueries.symbol;
-
-    console.log(this.$store.state.config.scrollGuide);
   },
 
   methods: {
