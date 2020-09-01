@@ -34,7 +34,7 @@ document.body.innerHTML = document.body.innerHTML.replace(
 // 扱いやすように歌詞部分にIDを付与
 const lyrics = document.querySelector('.main > div');
 lyrics.setAttribute('id', 'chordwiki-plus-lyrics');
-lyrics.setAttribute('ref', 'chordwiki-plus-lyrics');
+lyrics.setAttribute('ref', 'chordwikiPlusLyrics');
 lyrics.setAttribute('v-on:click', 'toggleAutoScroll');
 
 // SongMenuをマウントする要素を追加
@@ -81,9 +81,15 @@ new Vue({
         clearInterval(this.autoScrollTimer);
         this.autoScrollTimer = null;
       } else {
+        const _this = this;
         this.autoScrollTimer = setInterval(function () {
-          // TODO: 下まで行ったら自動で止める
-          window.scrollBy(0, 1);
+          if (_this.$refs.chordwikiPlusLyrics.getBoundingClientRect().bottom < window.innerHeight - 100) {
+            // 下までいったら自動で止める
+            clearInterval(_this.autoScrollTimer);
+            _this.autoScrollTimer = null;
+          } else {
+            window.scrollBy(0, 1);
+          }
         }, this.scrollSpeed);
       }
     },
