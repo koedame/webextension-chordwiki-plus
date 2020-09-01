@@ -35,6 +35,7 @@ document.body.innerHTML = document.body.innerHTML.replace(
 const lyrics = document.querySelector('.main > div');
 lyrics.setAttribute('id', 'chordwiki-plus-lyrics');
 lyrics.setAttribute('ref', 'chordwiki-plus-lyrics');
+lyrics.setAttribute('v-on:click', 'toggleAutoScroll');
 
 // SongMenuをマウントする要素を追加
 let titleElement = document.querySelector('.subtitle');
@@ -66,6 +67,32 @@ new Vue({
     SongMenu,
     ScrollAfterimage,
     ChordDiagram,
+  },
+  data() {
+    return {
+      autoScrollTimer: null,
+      scrollSpeed: 100,
+    };
+  },
+  methods: {
+    toggleAutoScroll() {
+      // TODO: スクロールスピード調整機能
+      if (this.autoScrollTimer) {
+        clearInterval(this.autoScrollTimer);
+        this.autoScrollTimer = null;
+      } else {
+        this.autoScrollTimer = setInterval(function () {
+          // TODO: 下まで行ったら自動で止める
+          window.scrollBy(0, 1);
+        }, this.scrollSpeed);
+      }
+    },
+  },
+  destroyed() {
+    if (this.autoScrollTimer) {
+      clearInterval(this.autoScrollTimer);
+      this.autoScrollTimer = null;
+    }
   },
 });
 
