@@ -6,6 +6,7 @@ import { ConfigState, RootState } from '../types';
 const state: ConfigState = {
   chordDiagram: false,
   scrollGuide: true,
+  autoScrollSpeed: 150,
 };
 
 const getters: GetterTree<ConfigState, RootState> = {
@@ -14,6 +15,9 @@ const getters: GetterTree<ConfigState, RootState> = {
   },
   scrollGuide: (state) => {
     return state.scrollGuide;
+  },
+  autoScrollSpeed: (state) => {
+    return state.autoScrollSpeed;
   },
 };
 
@@ -51,6 +55,9 @@ const mutations: MutationTree<ConfigState> = {
         state.scrollGuide = value;
       });
   },
+  setAutoScrollSpeed: (state, value: number) => {
+    state.autoScrollSpeed = value;
+  },
 };
 
 const actions: ActionTree<ConfigState, RootState> = {
@@ -59,6 +66,9 @@ const actions: ActionTree<ConfigState, RootState> = {
   },
   setScrollGuide({ commit }, value: boolean) {
     commit('setScrollGuide', value);
+  },
+  setAutoScrollSpeed({ commit }, value: number) {
+    commit('setAutoScrollSpeed', value);
   },
   restoreFromLocalStorage({ commit }) {
     commit('restoreFromLocalStorage');

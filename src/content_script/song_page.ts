@@ -71,35 +71,50 @@ new Vue({
   data() {
     return {
       autoScrollTimer: null,
-      scrollSpeed: 100,
     };
   },
   methods: {
     toggleAutoScroll() {
-      // TODO: スクロールスピード調整機能
       if (this.autoScrollTimer) {
-        clearInterval(this.autoScrollTimer);
-        this.autoScrollTimer = null;
+        this.stopAutoScroll();
       } else {
-        const _this = this;
-        this.autoScrollTimer = setInterval(function () {
-          if (_this.$refs.chordwikiPlusLyrics.getBoundingClientRect().bottom < window.innerHeight - 100) {
-            // 下までいったら自動で止める
-            clearInterval(_this.autoScrollTimer);
-            _this.autoScrollTimer = null;
-          } else {
-            window.scrollBy(0, 1);
-          }
-        }, this.scrollSpeed);
+        this.runAutoScroll();
       }
+    },
+    runAutoScroll() {
+      if (this.$refs.chordwikiPlusLyrics.getBoundingClientRect().bottom < window.innerHeight - 100) {
+        // 下までいったら自動で止める
+        this.stopAutoScroll();
+      } else {
+        window.scrollBy(0, 1);
+        this.autoScrollTimer = setTimeout(this.runAutoScroll, this.$store.state.config.autoScrollSpeed);
+      }
+    },
+    stopAutoScroll() {
+      clearTimeout(this.autoScrollTimer);
+      this.autoScrollTimer = null;
     },
   },
   destroyed() {
     if (this.autoScrollTimer) {
-      clearInterval(this.autoScrollTimer);
-      this.autoScrollTimer = null;
+      this.stopAutoScroll();
     }
   },
 });
 
 store.dispatch('config/restoreFromLocalStorage');
+
+// 自動スクロール速度調整ボタン
+const changeAutoScrollSpeedButton = document.createElement('change-auto-scroll-speed-button');
+changeAutoScrollSpeedButton.setAttribute('id', 'change-auto-scroll-speed-button');
+document.body.appendChild(changeAutoScrollSpeedButton);
+
+//@ts-ignore
+import ChangeAutoScrollSpeedButton from './components/ChangeAutoScrollSpeedButton';
+new Vue({
+  el: '#change-auto-scroll-speed-button',
+  store: store,
+  components: {
+    ChangeAutoScrollSpeedButton,
+  },
+});
