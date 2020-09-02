@@ -51,6 +51,9 @@ const scrollAfterimageTag = document.createElement('scroll-afterimage');
 scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
 lyrics.appendChild(scrollAfterimageTag);
 
+// メニューを削除
+document.getElementById('key').remove();
+
 //@ts-ignore
 import TransposeButton from './components/TransposeButton';
 //@ts-ignore
