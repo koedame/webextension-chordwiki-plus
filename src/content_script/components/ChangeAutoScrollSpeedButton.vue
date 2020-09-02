@@ -32,15 +32,26 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.chordwiki-plus-change-auto-scroll-speed-button
-  position: fixed
-  left: 0
-  top: 340px
 
-.vertical-buttons
-  &__item
-    display: block !important
-    width: 20px
+@media only screen and (max-width: 639px)
+  .chordwiki-plus-change-auto-scroll-speed-button
+    position: fixed
+    bottom: 0
+
+  .vertical-buttons
+    &__item
+      height: 20px !important
+
+@media only screen and (min-width: 639px)
+  .chordwiki-plus-change-auto-scroll-speed-button
+    position: fixed
+    left: 0
+    top: 340px
+
+  .vertical-buttons
+    &__item
+      display: block !important
+      width: 20px
 
 .chordwiki-plus-change-auto-scroll-speed-button
   @import "~bulma/sass/utilities/_all"
