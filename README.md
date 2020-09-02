@@ -12,10 +12,11 @@
 - ➖ スクロールガイド
 - 🎸 コードダイアグラム表示
 - 🔗 移調テキストの自動リンク化
+- 📜 自動スクロールボタン
 
 ## 対応ブラウザ
 
-- ✅ Google Chrome（申請中）
+- ✅ Google Chrome （[Google Chrome 版をインストール](https://chrome.google.com/webstore/detail/chordwiki-plus-chordwiki%E3%81%8C/okpomplfbfbmabonmfloendefonobaco?hl=ja)）
 - ✅ Mozilla Firefox（申請中）
 - ✅ Opera（申請中）
 - ✅ Microsoft Edge（申請中）
