@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex, { StoreOptions } from 'vuex';
 
 import { config } from './Config';
+import { autoScroll } from './AutoScroll';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,7 @@ const store: StoreOptions<RootState> = {
   },
   modules: {
     config,
+    autoScroll,
   },
 };
 

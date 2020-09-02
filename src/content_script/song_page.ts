@@ -34,7 +34,8 @@ document.body.innerHTML = document.body.innerHTML.replace(
 // 扱いやすように歌詞部分にIDを付与
 const lyrics = document.querySelector('.main > div');
 lyrics.setAttribute('id', 'chordwiki-plus-lyrics');
-lyrics.setAttribute('ref', 'chordwiki-plus-lyrics');
+lyrics.setAttribute('ref', 'chordwikiPlusLyrics');
+lyrics.setAttribute('v-on:click', 'toggleAutoScroll');
 
 // SongMenuをマウントする要素を追加
 let titleElement = document.querySelector('.subtitle');
@@ -49,6 +50,9 @@ titleElement.parentNode.insertBefore(chordwikiPlusSongMenuElement, titleElement.
 const scrollAfterimageTag = document.createElement('scroll-afterimage');
 scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
 lyrics.appendChild(scrollAfterimageTag);
+
+// メニューを削除
+document.getElementById('key').remove();
 
 //@ts-ignore
 import TransposeButton from './components/TransposeButton';
@@ -67,6 +71,40 @@ new Vue({
     ScrollAfterimage,
     ChordDiagram,
   },
+  data() {
+    return {
+      autoScrollTimer: null,
+    };
+  },
+  methods: {
+    toggleAutoScroll() {
+      if (this.$store.state.autoScroll.timer) {
+        this.$store.dispatch('autoScroll/stopAutoScroll');
+      } else {
+        this.$store.dispatch('autoScroll/runAutoScroll');
+      }
+    },
+  },
+  destroyed() {
+    if (this.$store.state.autoScroll.timer) {
+      this.$store.dispatch('autoScroll/stopAutoScroll');
+    }
+  },
 });
 
 store.dispatch('config/restoreFromLocalStorage');
+
+// 自動スクロール速度調整ボタン
+const changeAutoScrollSpeedButton = document.createElement('change-auto-scroll-speed-button');
+changeAutoScrollSpeedButton.setAttribute('id', 'change-auto-scroll-speed-button');
+document.body.appendChild(changeAutoScrollSpeedButton);
+
+//@ts-ignore
+import ChangeAutoScrollSpeedButton from './components/ChangeAutoScrollSpeedButton';
+new Vue({
+  el: '#change-auto-scroll-speed-button',
+  store: store,
+  components: {
+    ChangeAutoScrollSpeedButton,
+  },
+});
