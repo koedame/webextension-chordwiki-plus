@@ -75,29 +75,16 @@ new Vue({
   },
   methods: {
     toggleAutoScroll() {
-      if (this.autoScrollTimer) {
-        this.stopAutoScroll();
+      if (this.$store.state.autoScroll.timer) {
+        this.$store.dispatch('autoScroll/stopAutoScroll');
       } else {
-        this.runAutoScroll();
+        this.$store.dispatch('autoScroll/runAutoScroll');
       }
-    },
-    runAutoScroll() {
-      if (this.$refs.chordwikiPlusLyrics.getBoundingClientRect().bottom < window.innerHeight - 100) {
-        // 下までいったら自動で止める
-        this.stopAutoScroll();
-      } else {
-        window.scrollBy(0, 1);
-        this.autoScrollTimer = setTimeout(this.runAutoScroll, this.$store.state.config.autoScrollSpeed);
-      }
-    },
-    stopAutoScroll() {
-      clearTimeout(this.autoScrollTimer);
-      this.autoScrollTimer = null;
     },
   },
   destroyed() {
-    if (this.autoScrollTimer) {
-      this.stopAutoScroll();
+    if (this.$store.state.autoScroll.timer) {
+      this.$store.dispatch('autoScroll/stopAutoScroll');
     }
   },
 });

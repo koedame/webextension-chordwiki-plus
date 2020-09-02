@@ -5,5 +5,9 @@ export interface RootState {
 export interface ConfigState {
   chordDiagram: boolean;
   scrollGuide: boolean;
-  autoScrollSpeed: number;
+}
+
+export interface AutoScrollState {
+  scrollSpeed: number;
+  timer: any;
 }
