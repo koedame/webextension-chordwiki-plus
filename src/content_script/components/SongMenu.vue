@@ -69,11 +69,16 @@
 
   b-field(grouped)
     .control
-      b-switch(v-model="$store.state.config.chordDiagram", type="is-info", size="is-small", @input="onChangeChordDiagram") コードダイアグラム
+      b-switch(v-model="$store.state.config.chordDiagram", type="is-info", size="is-small", @input="onChangeChordDiagram")
+        | コードダイアグラム
 
     .control
       b-switch(v-model="$store.state.config.scrollGuide", type="is-info", size="is-small", @input="onChangeScrollGuide")
         | スクロールガイド
+
+    .control
+      b-switch(v-model="$store.state.config.embedYouTube", type="is-info", size="is-small", @input="onChangeEmbedYouTube")
+        | YouTubeの埋め込み
 </template>
 
 <script>
@@ -128,12 +133,13 @@ export default {
 
   methods: {
     onChangeChordDiagram(value) {
-      this.configChordDiagram = value;
       this.$store.dispatch('config/setChordDiagram', value);
     },
     onChangeScrollGuide(value) {
-      this.configScrollGuide = value;
       this.$store.dispatch('config/setScrollGuide', value);
+    },
+    onChangeEmbedYouTube(value) {
+      this.$store.dispatch('config/setEmbedYouTube', value);
     },
     copyUrl() {
       this.$clipboard(this.currentUrl);

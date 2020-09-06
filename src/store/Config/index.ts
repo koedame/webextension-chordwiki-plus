@@ -6,6 +6,7 @@ import { ConfigState, RootState } from '../types';
 const state: ConfigState = {
   chordDiagram: false,
   scrollGuide: true,
+  embedYouTube: true,
 };
 
 const getters: GetterTree<ConfigState, RootState> = {
@@ -14,6 +15,9 @@ const getters: GetterTree<ConfigState, RootState> = {
   },
   scrollGuide: (state) => {
     return state.scrollGuide;
+  },
+  embedYouTube: (state) => {
+    return state.embedYouTube;
   },
 };
 
@@ -31,6 +35,13 @@ const mutations: MutationTree<ConfigState> = {
       //@ts-ignore
       .then(({ configScrollGuide }) => {
         state.scrollGuide = configScrollGuide;
+      });
+
+    browser.storage.local
+      .get('configEmbedYouTube')
+      //@ts-ignore
+      .then(({ configEmbedYouTube }) => {
+        state.embedYouTube = configEmbedYouTube;
       });
   },
   setChordDiagram: (state, value: boolean) => {
@@ -51,6 +62,15 @@ const mutations: MutationTree<ConfigState> = {
         state.scrollGuide = value;
       });
   },
+  setEmbedYouTube: (state, value: boolean) => {
+    browser.storage.local
+      .set({
+        configEmbedYouTube: value,
+      })
+      .then(() => {
+        state.embedYouTube = value;
+      });
+  },
 };
 
 const actions: ActionTree<ConfigState, RootState> = {
@@ -59,6 +79,9 @@ const actions: ActionTree<ConfigState, RootState> = {
   },
   setScrollGuide({ commit }, value: boolean) {
     commit('setScrollGuide', value);
+  },
+  setEmbedYouTube({ commit }, value: boolean) {
+    commit('setEmbedYouTube', value);
   },
   restoreFromLocalStorage({ commit }) {
     commit('restoreFromLocalStorage');

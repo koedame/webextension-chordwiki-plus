@@ -51,12 +51,19 @@ const scrollAfterimageTag = document.createElement('scroll-afterimage');
 scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
 lyrics.appendChild(scrollAfterimageTag);
 
+// YouTube動画を埋め込み
+const matchedYouTubeID = document.body.innerHTML.match(/href=\"https\:\/\/www\.youtube\.com\/watch\?v=(.+?)\"/);
+if (matchedYouTubeID) {
+  const chordwikiPlusYouTubePlayerElement = document.createElement('embed-player');
+  chordwikiPlusYouTubePlayerElement.setAttribute('movie', matchedYouTubeID[1]);
+  // lyrics.appendChild(chordwikiPlusYouTubePlayerElement);
+  titleElement.parentNode.insertBefore(chordwikiPlusYouTubePlayerElement, titleElement.nextElementSibling);
+}
+
 // メトロノームを追加
 document.body.innerHTML = document.body.innerHTML.replace(/(BPM.([0-9]+))/g, (match, capture1, capture2) => {
   return `<metronome :bpm="${parseInt(capture2)}"></metronome>${capture1}`;
 });
-
-export default addOriginalKeyButton;
 
 // メニューを削除
 document.getElementById('key').remove();
@@ -71,6 +78,8 @@ import ScrollAfterimage from './components/ScrollAfterimage';
 import ChordDiagram from './components/ChordDiagram';
 //@ts-ignore
 import Metronome from './components/Metronome';
+//@ts-ignore
+import EmbedPlayer from './components/EmbedPlayer';
 new Vue({
   el: '.main',
   store: store,
@@ -80,6 +89,7 @@ new Vue({
     ScrollAfterimage,
     ChordDiagram,
     Metronome,
+    EmbedPlayer,
   },
   data() {
     return {
