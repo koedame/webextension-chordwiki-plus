@@ -173,4 +173,8 @@ export default {
   .current-url
     max-width: 410px
     width: 100%
+
+.word
+  min-width: 16px
+  display: inline-block
 </style>
