@@ -51,6 +51,13 @@ const scrollAfterimageTag = document.createElement('scroll-afterimage');
 scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
 lyrics.appendChild(scrollAfterimageTag);
 
+// メトロノームを追加
+document.body.innerHTML = document.body.innerHTML.replace(/(BPM.([0-9]+))/g, (match, capture1, capture2) => {
+  return `<metronome :bpm="${parseInt(capture2)}"></metronome>${capture1}`;
+});
+
+export default addOriginalKeyButton;
+
 // メニューを削除
 document.getElementById('key').remove();
 
@@ -62,6 +69,8 @@ import SongMenu from './components/SongMenu';
 import ScrollAfterimage from './components/ScrollAfterimage';
 //@ts-ignore
 import ChordDiagram from './components/ChordDiagram';
+//@ts-ignore
+import Metronome from './components/Metronome';
 new Vue({
   el: '.main',
   store: store,
@@ -70,6 +79,7 @@ new Vue({
     SongMenu,
     ScrollAfterimage,
     ChordDiagram,
+    Metronome,
   },
   data() {
     return {
