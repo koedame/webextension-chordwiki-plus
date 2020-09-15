@@ -77,8 +77,8 @@
         | スクロールガイド
 
     .control
-      b-switch(v-model="$store.state.config.embedYouTube", type="is-info", size="is-small", @input="onChangeEmbedYouTube")
-        | YouTubeの埋め込み
+      b-switch(v-model="$store.state.config.embedPlayer", type="is-info", size="is-small", @input="onChangeEmbedPlayer")
+        | 動画の埋め込み
 </template>
 
 <script>
@@ -138,8 +138,8 @@ export default {
     onChangeScrollGuide(value) {
       this.$store.dispatch('config/setScrollGuide', value);
     },
-    onChangeEmbedYouTube(value) {
-      this.$store.dispatch('config/setEmbedYouTube', value);
+    onChangeEmbedPlayer(value) {
+      this.$store.dispatch('config/setEmbedPlayer', value);
     },
     copyUrl() {
       this.$clipboard(this.currentUrl);

@@ -1,5 +1,5 @@
 <template lang="pug">
-#chordwiki-plus-nico-video-embed-player(v-show="$store.state.config.embedYouTube")
+#chordwiki-plus-nico-video-embed-player(v-show="$store.state.config.embedPlayer")
   script(
     type="application/javascript",
     :src="`https://embed.nicovideo.jp/watch/${movie}/script`"
