@@ -1,6 +1,6 @@
 <template lang="pug">
-#chordwiki-plus-embed-player(v-show="$store.state.config.embedYouTube")
-  iframe.chordwiki-plus-embed-playere__iframe(
+#chordwiki-plus-you-tube-embed-player(v-show="$store.state.config.embedYouTube")
+  iframe.chordwiki-plus-you-tube-embed-player__iframe(
     width="500",
     height="150",
     :src="`https://www.youtube.com/embed/${movie}`",
@@ -22,6 +22,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.chordwiki-plus-embed-playere__iframe
+.chordwiki-plus-you-tube-embed-player__iframe
   width: 90%
 </style>

@@ -54,9 +54,8 @@ lyrics.appendChild(scrollAfterimageTag);
 // YouTube動画を埋め込み
 const matchedYouTubeID = document.body.innerHTML.match(/href=\"https\:\/\/www\.youtube\.com\/watch\?v=(.+?)\"/);
 if (matchedYouTubeID) {
-  const chordwikiPlusYouTubePlayerElement = document.createElement('embed-player');
+  const chordwikiPlusYouTubePlayerElement = document.createElement('you-tube-embed-player');
   chordwikiPlusYouTubePlayerElement.setAttribute('movie', matchedYouTubeID[1]);
-  // lyrics.appendChild(chordwikiPlusYouTubePlayerElement);
   titleElement.parentNode.insertBefore(chordwikiPlusYouTubePlayerElement, titleElement.nextElementSibling);
 }
 
@@ -79,7 +78,7 @@ import ChordDiagram from './components/ChordDiagram';
 //@ts-ignore
 import Metronome from './components/Metronome';
 //@ts-ignore
-import EmbedPlayer from './components/EmbedPlayer';
+import YouTubeEmbedPlayer from './components/YouTubeEmbedPlayer';
 new Vue({
   el: '.main',
   store: store,
@@ -89,7 +88,7 @@ new Vue({
     ScrollAfterimage,
     ChordDiagram,
     Metronome,
-    EmbedPlayer,
+    YouTubeEmbedPlayer,
   },
   data() {
     return {
