@@ -138,3 +138,18 @@ new Vue({
     ChangeAutoScrollSpeedButton,
   },
 });
+
+// 独自ヘッダー
+const customHeaderElement = document.createElement('custom-header');
+customHeaderElement.setAttribute('id', 'custom-header');
+document.getElementById('header').outerHTML = customHeaderElement.outerHTML;
+
+//@ts-ignore
+import CustomHeader from './components/CustomHeader';
+new Vue({
+  el: '#custom-header',
+  store: store,
+  components: {
+    CustomHeader,
+  },
+});
