@@ -1,5 +1,24 @@
 # CHANGELOGS
 
+## v1.3.1
+
+### 変更
+
+- メトロノームの不具合を修正
+
+### 依存パッケージ
+
+- query-string from 6.13.1 to 6.13.2
+- @sentry/browser from 5.22.3 to 5.23.0
+- mini-css-extract-plugin from 0.11.0 to 0.11.2
+- archiver from 5.0.0 to 5.0.2
+- @vue/composition-api from 1.0.0-beta.11 to 1.0.0-beta.13
+- moment from 2.27.0 to 2.28.0
+- pretty-quick from 3.0.0 to 3.0.2
+- css-loader from 4.2.2 to 4.3.0
+- @sentry/integrations from 5.22.3 to 5.23.0
+- husky from 4.2.5 to 4.3.0
+
 ## v1.3.0
 
 ### 新規
