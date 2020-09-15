@@ -12,12 +12,12 @@
             .control
               b-button(size="is-small", type="is-info", @click="onSearch")
                 | 検索
-
-    template(slot='end')
       b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
         | ランキング
       b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
         | 閲覧履歴
+
+    template(slot='end')
       b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
         | 編集
       b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=log&t=${queries.t}`")
