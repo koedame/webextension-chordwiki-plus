@@ -18,16 +18,17 @@
         | 閲覧履歴
 
     template(slot='end')
-      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
-        | 編集
-      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=log&t=${queries.t}`")
-        | 履歴
-      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=note&t=${queries.t}`")
-        | ノート
-      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=rating&t=${queries.t}`")
-        | 評価
-      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=addlist&t=${queries.t}`")
-        | セトリ登録
+      b-navbar-dropdown(label='楽曲メニュー', right)
+        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
+          | 編集
+        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=log&t=${queries.t}`")
+          | 履歴
+        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=note&t=${queries.t}`")
+          | ノート
+        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=rating&t=${queries.t}`")
+          | 評価
+        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=addlist&t=${queries.t}`")
+          | セトリ登録
 
       //- b-navbar-dropdown(label='その他')
       //-   b-navbar-item(href='https://ja.chordwiki.org/random.cgi')
@@ -69,6 +70,7 @@ export default {
 <style lang="sass">
 .chordwiki-plus-custom-header
   @import "~bulma/sass/utilities/_all"
+  $navbar-breakpoint: $tablet
   @import "~bulma"
   @import "~buefy/src/scss/buefy"
 
