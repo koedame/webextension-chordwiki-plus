@@ -51,6 +51,14 @@ const scrollAfterimageTag = document.createElement('scroll-afterimage');
 scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
 lyrics.appendChild(scrollAfterimageTag);
 
+// ニコニコ動画を埋め込み
+const matchedNicoVideoID = document.body.innerHTML.match(/href=\"https\:\/\/www\.nicovideo\.jp\/watch\/(sm[0-9]+?)\"/);
+if (matchedNicoVideoID) {
+  const chordwikiPlusNicoVideoPlayerElement = document.createElement('nico-video-embed-player');
+  chordwikiPlusNicoVideoPlayerElement.setAttribute('movie', matchedNicoVideoID[1]);
+  titleElement.parentNode.insertBefore(chordwikiPlusNicoVideoPlayerElement, titleElement.nextElementSibling);
+}
+
 // YouTube動画を埋め込み
 const matchedYouTubeID = document.body.innerHTML.match(/href=\"https\:\/\/www\.youtube\.com\/watch\?v=(.+?)\"/);
 if (matchedYouTubeID) {
@@ -79,6 +87,8 @@ import ChordDiagram from './components/ChordDiagram';
 import Metronome from './components/Metronome';
 //@ts-ignore
 import YouTubeEmbedPlayer from './components/YouTubeEmbedPlayer';
+//@ts-ignore
+import NicoVideoEmbedPlayer from './components/NicoVideoEmbedPlayer';
 new Vue({
   el: '.main',
   store: store,
@@ -89,6 +99,7 @@ new Vue({
     ChordDiagram,
     Metronome,
     YouTubeEmbedPlayer,
+    NicoVideoEmbedPlayer,
   },
   data() {
     return {
