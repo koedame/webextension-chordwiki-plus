@@ -1,10 +1,14 @@
 <template lang="pug">
 span#chordwiki-plus-metronome
-  span.clock-hands
-    span(v-show="metronomeTick")
+  span(v-show="metronomeTick")
+    span.clock-hands
       | \
-  span.clock-hands
-    span(v-show="!metronomeTick")
+    span.clock-hands.hide
+      | /
+  span(v-show="!metronomeTick")
+    span.clock-hands.hide
+      | \
+    span.clock-hands
       | /
 </template>
 
@@ -53,4 +57,7 @@ export default {
   display: inline-block
   width: 10px
   color: #888
+
+.hide
+  color: #fff
 </style>
