@@ -5,10 +5,17 @@
       b-navbar-item(tag='a', href="/")
         img(src='https://ja.chordwiki.org/logo.jpg')
     template(slot='start')
+      b-navbar-item(tag="div")
+        form(@submit.prevent="onSearch")
+          b-field
+            b-input.search-input(placeholder="キーワードを入力", type='search', size="is-small", v-model="searchKeyword")
+            .control
+              b-button(size="is-small", type="is-info", @click="onSearch")
+                | 検索
+
+    template(slot='end')
       b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
         | ランキング
-      b-navbar-item(href='https://ja.chordwiki.org/search.html')
-        | 検索
       b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
         | 閲覧履歴
       b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
@@ -21,20 +28,12 @@
         | 評価
       b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=addlist&t=${queries.t}`")
         | セトリ登録
-      b-navbar-item(href='https://ja.chordwiki.org/random.cgi')
-        | ランダム
-      b-navbar-item(href='https://ja.chordwiki.org/cd.html')
-        | コードブック
-    //- template(slot='end')
-    //-   b-navbar-dropdown(label='その他')
-    //-     b-navbar-item(href='#')
-    //-       | 履歴
-    //-   b-navbar-item(tag='div')
-    //-     .buttons
-    //-       a.button.is-primary
-    //-         strong Sign up
-    //-       a.button.is-light
-    //-         | Log in
+
+      //- b-navbar-dropdown(label='その他')
+      //-   b-navbar-item(href='https://ja.chordwiki.org/random.cgi')
+      //-     | ランダム
+      //-   b-navbar-item(href='https://ja.chordwiki.org/cd.html')
+      //-     | コードブック
 </template>
 
 <script>
@@ -49,6 +48,7 @@ export default {
         key: 0,
         symbol: '',
       },
+      searchKeyword: '',
     };
   },
   mounted() {
@@ -58,6 +58,11 @@ export default {
     this.queries.key = parseInt(parsedQueries.key, 10);
     this.queries.symbol = parsedQueries.symbol;
   },
+  methods: {
+    onSearch() {
+      location.href = `https://ja.chordwiki.org/search.html#gsc.q=${this.searchKeyword}`;
+    },
+  },
 };
 </script>
 
@@ -66,4 +71,7 @@ export default {
   @import "~bulma/sass/utilities/_all"
   @import "~bulma"
   @import "~buefy/src/scss/buefy"
+
+  .search-input
+    min-width: 170px
 </style>
