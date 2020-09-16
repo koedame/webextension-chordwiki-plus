@@ -1,9 +1,9 @@
 <template lang="pug">
 .chordwiki-plus-song-tags
   .buttons.tags__item
-    b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light")
+    b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light", size="is-small")
       | {{tag}}
-    b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${queries.t}`")
+    b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${queries.t}`", size="is-small")
       | タグを編集
 </template>
 
