@@ -1,6 +1,6 @@
 <template lang="pug">
 .chordwiki-plus-song-tags
-  .buttons.tags__item
+  .buttons
     b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light", size="is-small")
       | {{tag}}
     b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${queries.t}`", size="is-small")
@@ -45,6 +45,8 @@ export default {
 
   margin-bottom: 1em
 
-  .tags__item
-    justify-content: center
+h1.title
+  text-align: left
+h2.subtitle
+  text-align: left
 </style>
