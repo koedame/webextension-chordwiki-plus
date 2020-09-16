@@ -188,5 +188,5 @@ body
   margin: 0
 
 div.main
-  margin-right: 20px
+  margin-right: 80px
 </style>
