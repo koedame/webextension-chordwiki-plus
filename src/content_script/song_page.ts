@@ -67,6 +67,20 @@ if (matchedYouTubeID) {
   titleElement.parentNode.insertBefore(chordwikiPlusYouTubePlayerElement, titleElement.nextElementSibling);
 }
 
+// タグ
+const tags = [];
+const tagElements = document.querySelectorAll('.tag a[itemprop=keywords]');
+for (const tagElement of tagElements) {
+  // @ts-ignore
+  tags.push(tagElement.innerText);
+}
+// @ts-ignore
+if (tags.legnth !== 0) {
+  const chordwikiPlusSongTagsElement = document.createElement('song-tags');
+  chordwikiPlusSongTagsElement.setAttribute(':tags', JSON.stringify(tags));
+  titleElement.parentNode.insertBefore(chordwikiPlusSongTagsElement, titleElement.nextElementSibling);
+}
+
 // メトロノームを追加
 document.body.innerHTML = document.body.innerHTML.replace(/(BPM.([0-9]+))/g, (match, capture1, capture2) => {
   return `<metronome :bpm="${parseInt(capture2)}"></metronome>${capture1}`;
@@ -89,6 +103,8 @@ import Metronome from './components/Metronome';
 import YouTubeEmbedPlayer from './components/YouTubeEmbedPlayer';
 //@ts-ignore
 import NicoVideoEmbedPlayer from './components/NicoVideoEmbedPlayer';
+//@ts-ignore
+import SongTags from './components/SongTags';
 new Vue({
   el: '.main',
   store: store,
@@ -100,6 +116,7 @@ new Vue({
     Metronome,
     YouTubeEmbedPlayer,
     NicoVideoEmbedPlayer,
+    SongTags,
   },
   data() {
     return {
