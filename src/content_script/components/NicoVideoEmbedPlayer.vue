@@ -20,6 +20,6 @@ export default {
 <style lang="sass">
 #chordwiki-plus-nico-video-embed-player
   iframe
-    width: 90%
+    width: 100%
     height: 150px
 </style>

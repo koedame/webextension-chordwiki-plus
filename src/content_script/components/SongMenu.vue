@@ -183,4 +183,10 @@ export default {
 .word
   min-width: 16px
   display: inline-block
+
+body
+  margin: 0
+
+div.main
+  margin-right: 80px
 </style>
