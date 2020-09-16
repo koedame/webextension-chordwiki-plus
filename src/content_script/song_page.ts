@@ -80,17 +80,11 @@ if (tags.legnth !== 0) {
   chordwikiPlusSongTagsElement.setAttribute(':tags', JSON.stringify(tags));
   titleElement.parentNode.insertBefore(chordwikiPlusSongTagsElement, titleElement.nextElementSibling);
 }
-// 既存のタグを削除
-const tagElement = window.document.querySelector('.tag');
-tagElement.parentNode.removeChild(tagElement);
 
 // メトロノームを追加
 document.body.innerHTML = document.body.innerHTML.replace(/(BPM.([0-9]+))/g, (match, capture1, capture2) => {
   return `<metronome :bpm="${parseInt(capture2)}"></metronome>${capture1}`;
 });
-
-// メニューを削除
-document.getElementById('key').remove();
 
 //@ts-ignore
 import TransposeButton from './components/TransposeButton';
@@ -143,6 +137,13 @@ new Vue({
 });
 
 store.dispatch('config/restoreFromLocalStorage');
+
+// メニューを削除
+document.getElementById('key').remove();
+
+// サイドバーを削除
+const sideBarElement = document.getElementById('side');
+sideBarElement.parentNode.removeChild(sideBarElement);
 
 // 自動スクロール速度調整ボタン
 const changeAutoScrollSpeedButton = document.createElement('change-auto-scroll-speed-button');
