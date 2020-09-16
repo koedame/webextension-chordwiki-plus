@@ -23,5 +23,5 @@ export default {
 
 <style lang="sass" scoped>
 .chordwiki-plus-you-tube-embed-player__iframe
-  width: 90%
+  width: 100%
 </style>
