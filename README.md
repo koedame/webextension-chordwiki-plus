@@ -2,7 +2,7 @@
 
 [ChordWiki](https://ja.chordwiki.org/)に機能を追加します。
 
-![ChordWiki-Plus](/docs/screenshot_2400x1800.jpg)
+![ChordWiki-Plus](/docs/screenshot_2400x1800@2x.jpg)
 
 ## 機能
 
@@ -14,7 +14,9 @@
 - 🔗 移調テキストの自動リンク化
 - 📜 自動スクロールボタン
 - 🎦 YouTube のインライン再生
+- 🎦 ニコニコ動画のインライン再生
 - 🥁 簡易メトロノーム
+- 🔍 検索フォーム
 
 ## 対応ブラウザ
 

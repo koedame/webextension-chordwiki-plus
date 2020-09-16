@@ -51,12 +51,19 @@ const scrollAfterimageTag = document.createElement('scroll-afterimage');
 scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
 lyrics.appendChild(scrollAfterimageTag);
 
+// ニコニコ動画を埋め込み
+const matchedNicoVideoID = document.body.innerHTML.match(/href=\"https\:\/\/www\.nicovideo\.jp\/watch\/(sm[0-9]+?)\"/);
+if (matchedNicoVideoID) {
+  const chordwikiPlusNicoVideoPlayerElement = document.createElement('nico-video-embed-player');
+  chordwikiPlusNicoVideoPlayerElement.setAttribute('movie', matchedNicoVideoID[1]);
+  titleElement.parentNode.insertBefore(chordwikiPlusNicoVideoPlayerElement, titleElement.nextElementSibling);
+}
+
 // YouTube動画を埋め込み
 const matchedYouTubeID = document.body.innerHTML.match(/href=\"https\:\/\/www\.youtube\.com\/watch\?v=(.+?)\"/);
 if (matchedYouTubeID) {
-  const chordwikiPlusYouTubePlayerElement = document.createElement('embed-player');
+  const chordwikiPlusYouTubePlayerElement = document.createElement('you-tube-embed-player');
   chordwikiPlusYouTubePlayerElement.setAttribute('movie', matchedYouTubeID[1]);
-  // lyrics.appendChild(chordwikiPlusYouTubePlayerElement);
   titleElement.parentNode.insertBefore(chordwikiPlusYouTubePlayerElement, titleElement.nextElementSibling);
 }
 
@@ -79,7 +86,9 @@ import ChordDiagram from './components/ChordDiagram';
 //@ts-ignore
 import Metronome from './components/Metronome';
 //@ts-ignore
-import EmbedPlayer from './components/EmbedPlayer';
+import YouTubeEmbedPlayer from './components/YouTubeEmbedPlayer';
+//@ts-ignore
+import NicoVideoEmbedPlayer from './components/NicoVideoEmbedPlayer';
 new Vue({
   el: '.main',
   store: store,
@@ -89,7 +98,8 @@ new Vue({
     ScrollAfterimage,
     ChordDiagram,
     Metronome,
-    EmbedPlayer,
+    YouTubeEmbedPlayer,
+    NicoVideoEmbedPlayer,
   },
   data() {
     return {
@@ -126,5 +136,20 @@ new Vue({
   store: store,
   components: {
     ChangeAutoScrollSpeedButton,
+  },
+});
+
+// 独自ヘッダー
+const customHeaderElement = document.createElement('custom-header');
+customHeaderElement.setAttribute('id', 'custom-header');
+document.getElementById('header').outerHTML = customHeaderElement.outerHTML;
+
+//@ts-ignore
+import CustomHeader from './components/CustomHeader';
+new Vue({
+  el: '#custom-header',
+  store: store,
+  components: {
+    CustomHeader,
   },
 });
