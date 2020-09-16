@@ -80,6 +80,9 @@ if (tags.legnth !== 0) {
   chordwikiPlusSongTagsElement.setAttribute(':tags', JSON.stringify(tags));
   titleElement.parentNode.insertBefore(chordwikiPlusSongTagsElement, titleElement.nextElementSibling);
 }
+// 既存のタグを削除
+const tagElement = window.document.querySelector('.tag');
+tagElement.parentNode.removeChild(tagElement);
 
 // メトロノームを追加
 document.body.innerHTML = document.body.innerHTML.replace(/(BPM.([0-9]+))/g, (match, capture1, capture2) => {
