@@ -2,7 +2,7 @@
 
 [ChordWiki](https://ja.chordwiki.org/)に機能を追加します。
 
-![ChordWiki-Plus](/docs/screenshot_2400x1800.jpg)
+![ChordWiki-Plus](/docs/screenshot_2400x1800@2x.jpg)
 
 ## 機能
 
