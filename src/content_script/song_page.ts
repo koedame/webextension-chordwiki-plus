@@ -142,8 +142,13 @@ store.dispatch('config/restoreFromLocalStorage');
 document.getElementById('key').remove();
 
 // サイドバーを削除
-const sideBarElement = document.getElementById('side');
-sideBarElement.parentNode.removeChild(sideBarElement);
+document.getElementById('side').remove();
+
+// フッターを削除
+const footerElements = document.getElementsByClassName('footer');
+for (const footerElement of footerElements) {
+  footerElement.parentNode.removeChild(footerElement);
+}
 
 // 自動スクロール速度調整ボタン
 const changeAutoScrollSpeedButton = document.createElement('change-auto-scroll-speed-button');
@@ -172,5 +177,20 @@ new Vue({
   store: store,
   components: {
     CustomHeader,
+  },
+});
+
+// 独自フッター
+const customFooter = document.createElement('custom-footer');
+customFooter.setAttribute('id', 'custom-footer');
+document.body.appendChild(customFooter);
+
+//@ts-ignore
+import CustomFooter from './components/CustomFooter';
+new Vue({
+  el: '#custom-footer',
+  store: store,
+  components: {
+    CustomFooter,
   },
 });
