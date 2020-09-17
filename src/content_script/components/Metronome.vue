@@ -59,5 +59,5 @@ export default {
   color: #888
 
 .hide
-  color: #fff
+  opacity: 0
 </style>
