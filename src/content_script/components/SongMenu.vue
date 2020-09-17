@@ -197,6 +197,15 @@ div.main
     background: #f14668
     color: #fff
     display: inline-block
-    padding: 0 8px 0 80px
-    margin-left: -80px
+    padding: 0 9px
+    border-radius: 3px
+
+  p.comment
+    strong
+      font-weight: bold
+      font-size: 12px
+      background: #e6e6e6
+      display: inline-block
+      padding: 0 8px
+      border-radius: 3px
 </style>
