@@ -189,4 +189,14 @@ body
 
 div.main
   margin-right: 80px
+
+.main
+  p.key
+    font-size: 12px
+    font-weight: bold
+    background: #f14668
+    color: #fff
+    display: inline-block
+    padding: 0 8px 0 80px
+    margin-left: -80px
 </style>
