@@ -1,5 +1,5 @@
 <template lang="pug">
-#chordwiki-plus-you-tube-embed-player(v-show="$store.state.config.embedPlayer")
+#chordwiki-plus-you-tube-embed-player
   iframe.chordwiki-plus-you-tube-embed-player__iframe(
     width="500",
     height="150",

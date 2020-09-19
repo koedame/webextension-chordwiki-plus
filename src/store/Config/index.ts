@@ -6,7 +6,6 @@ import { ConfigState, RootState } from '../types';
 const state: ConfigState = {
   chordDiagram: false,
   scrollGuide: true,
-  embedPlayer: true,
 };
 
 const getters: GetterTree<ConfigState, RootState> = {
@@ -15,9 +14,6 @@ const getters: GetterTree<ConfigState, RootState> = {
   },
   scrollGuide: (state) => {
     return state.scrollGuide;
-  },
-  embedPlayer: (state) => {
-    return state.embedPlayer;
   },
 };
 
@@ -40,15 +36,6 @@ const mutations: MutationTree<ConfigState> = {
           state.scrollGuide = configScrollGuide;
         }
       });
-
-    browser.storage.local
-      .get('configEmbedPlayer')
-      //@ts-ignore
-      .then(({ configEmbedPlayer }) => {
-        if (typeof configEmbedPlayer !== 'undefined') {
-          state.embedPlayer = configEmbedPlayer;
-        }
-      });
   },
   setChordDiagram: (state, value: boolean) => {
     browser.storage.local
@@ -68,15 +55,6 @@ const mutations: MutationTree<ConfigState> = {
         state.scrollGuide = value;
       });
   },
-  setEmbedPlayer: (state, value: boolean) => {
-    browser.storage.local
-      .set({
-        configEmbedPlayer: value,
-      })
-      .then(() => {
-        state.embedPlayer = value;
-      });
-  },
 };
 
 const actions: ActionTree<ConfigState, RootState> = {
@@ -85,9 +63,6 @@ const actions: ActionTree<ConfigState, RootState> = {
   },
   setScrollGuide({ commit }, value: boolean) {
     commit('setScrollGuide', value);
-  },
-  setEmbedPlayer({ commit }, value: boolean) {
-    commit('setEmbedPlayer', value);
   },
   restoreFromLocalStorage({ commit }) {
     commit('restoreFromLocalStorage');
