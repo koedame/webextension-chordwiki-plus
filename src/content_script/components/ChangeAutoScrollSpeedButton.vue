@@ -15,6 +15,9 @@
 
     b-button.vertical-buttons__item(v-if="$store.state.autoScroll.scrollSpeed === 50", type="is-info", size="is-small", @click="changeSpeed(50)")  5
     b-button.vertical-buttons__item(v-else, size="is-small", @click="changeSpeed(50)")  5
+
+    b-button.vertical-buttons__item(v-if="!$store.state.autoScroll.timer", type="is-warning", size="is-small", @click="run") 開始
+    b-button.vertical-buttons__item(v-if="$store.state.autoScroll.timer", type="is-danger", size="is-small", @click="stop") 停止
 </template>
 
 <script>
@@ -26,6 +29,12 @@ export default {
           this.$store.dispatch('autoScroll/runAutoScroll');
         });
       });
+    },
+    stop() {
+      this.$store.dispatch('autoScroll/stopAutoScroll');
+    },
+    run() {
+      this.$store.dispatch('autoScroll/runAutoScroll');
     },
   },
 };
