@@ -5,7 +5,6 @@ export interface RootState {
 export interface ConfigState {
   chordDiagram: boolean;
   scrollGuide: boolean;
-  embedPlayer: boolean;
 }
 
 export interface AutoScrollState {
