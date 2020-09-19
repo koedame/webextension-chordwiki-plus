@@ -125,13 +125,13 @@ const config = {
             ignore: ['**/.DS_Store'],
           },
         },
-        // {
-        //   from: 'images',
-        //   to: 'images',
-        //   globOptions: {
-        //     ignore: ['**/.DS_Store'],
-        //   },
-        // },
+        {
+          from: 'images',
+          to: 'images',
+          globOptions: {
+            ignore: ['**/.DS_Store'],
+          },
+        },
         // { from: 'popup/popup.html', to: 'popup/popup.html', transform: transformHtml },
         // { from: 'options/options.html', to: 'options/options.html', transform: transformHtml },
         {
