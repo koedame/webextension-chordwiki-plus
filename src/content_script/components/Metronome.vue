@@ -1,18 +1,16 @@
 <template lang="pug">
 span#chordwiki-plus-metronome
   span(v-show="metronomeTick")
-    span.clock-hands
-      | \
-    span.clock-hands.hide
-      | /
+    img.clock-hands(:src="metronomeHandsLeftPath")
+    img.clock-hands.hide(:src="metronomeHandsRightPath")
   span(v-show="!metronomeTick")
-    span.clock-hands.hide
-      | \
-    span.clock-hands
-      | /
+    img.clock-hands.hide(:src="metronomeHandsLeftPath")
+    img.clock-hands(:src="metronomeHandsRightPath")
 </template>
 
 <script>
+const browser = require('webextension-polyfill');
+
 export default {
   props: {
     bpm: {
@@ -25,6 +23,8 @@ export default {
     return {
       meteonomeTimer: null,
       count: 0,
+      metronomeHandsLeftPath: browser.extension.getURL('/images/metronome-hands-left.png'),
+      metronomeHandsRightPath: browser.extension.getURL('/images/metronome-hands-right.png'),
     };
   },
   mounted() {
@@ -53,10 +53,14 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+#chordwiki-plus-metronome
+  margin-right: 5px
+
 .clock-hands
   display: inline-block
-  width: 10px
-  color: #888
+  width: 6px
+  height: 12px
+  vertical-align: text-bottom
 
 .hide
   opacity: 0

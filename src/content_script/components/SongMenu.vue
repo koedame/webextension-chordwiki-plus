@@ -75,10 +75,6 @@
     .control
       b-switch(v-model="$store.state.config.scrollGuide", type="is-info", size="is-small", @input="onChangeScrollGuide")
         | スクロールガイド
-
-    .control
-      b-switch(v-model="$store.state.config.embedPlayer", type="is-info", size="is-small", @input="onChangeEmbedPlayer")
-        | 動画の埋め込み
 </template>
 
 <script>
@@ -137,9 +133,6 @@ export default {
     },
     onChangeScrollGuide(value) {
       this.$store.dispatch('config/setScrollGuide', value);
-    },
-    onChangeEmbedPlayer(value) {
-      this.$store.dispatch('config/setEmbedPlayer', value);
     },
     copyUrl() {
       this.$clipboard(this.currentUrl);
