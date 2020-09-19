@@ -144,6 +144,9 @@ document.getElementById('key').remove();
 // サイドバーを削除
 document.getElementById('side').remove();
 
+// zenbackを削除
+document.getElementById('zenback-widget-loader').remove();
+
 // フッターを削除
 const footerElements = document.getElementsByClassName('footer');
 for (const footerElement of footerElements) {
