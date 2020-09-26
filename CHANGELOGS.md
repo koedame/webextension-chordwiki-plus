@@ -1,5 +1,26 @@
 # CHANGELOGS
 
+## v2.0.0
+
+### 変更
+
+- 細かい UI 変更
+- 移調や表記変更の処理を独自のものへ変更
+- ヘッダーを固定
+- フッターにリンク追加
+
+### 依存パッケージ
+
+- @sentry/apm from 5.22.3 to 5.24.2
+- @sentry/browser from 5.23.0 to 5.24.2
+- @sentry/integrations from 5.23.0 to 5.24.2
+- @vue/composition-api from 1.0.0-beta.13 to 1.0.0-beta.14
+- copy-webpack-plugin from 6.1.0 to 6.1.1
+- prettier from 2.1.1 to 2.1.2
+- ts-loader from 8.0.3 to 8.0.4
+- typescript from 4.0.2 to 4.0.3
+- webpack from 4.44.1 to 4.44.2
+
 ## v1.5.2
 
 ### 新規
