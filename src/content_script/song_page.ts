@@ -1,3 +1,9 @@
+// 不要になるscriptとiframeを削除
+const scriptTags: NodeList = window.document.querySelectorAll('script,iframe,style,link[rel="stylesheet"]');
+scriptTags.forEach((value: Node, key: number, parent: NodeList): void => {
+  value.parentNode.removeChild(value);
+});
+
 import Vue from 'vue';
 
 import Buefy from 'buefy';
@@ -18,182 +24,340 @@ import store from '../store';
 import Clipboard from 'v-clipboard';
 Vue.use(Clipboard);
 
-import addOriginalKeyButton from '../lib/add_original_key_button';
+import axios from 'axios';
 
-// 移調文字をリンク化
-document.body.innerHTML = addOriginalKeyButton(document.body.innerHTML, location.search);
-
-// コードダイアグラムをコンポーネントに置き換え
-document.body.innerHTML = document.body.innerHTML.replace(
-  /<span class="chord" onclick="javascript:popupImage\('(\/cd\/.+?\.png)', event\);">(.+?)<\/span>/g,
-  (match, filePath, chordName) => {
-    return `<chord-diagram file-path="${filePath}" chord-name="${chordName}"></chord-diagram>`;
-  }
-);
-
-// 扱いやすように歌詞部分にIDを付与
-const lyrics = document.querySelector('.main > div');
-lyrics.setAttribute('id', 'chordwiki-plus-lyrics');
-lyrics.setAttribute('ref', 'chordwikiPlusLyrics');
-lyrics.setAttribute('v-on:click', 'toggleAutoScroll');
-
-// SongMenuをマウントする要素を追加
-let titleElement = document.querySelector('.subtitle');
-if (titleElement === null) {
-  titleElement = document.querySelector('.title');
-}
-const chordwikiPlusSongMenuElement = document.createElement('song-menu');
-chordwikiPlusSongMenuElement.setAttribute('id', 'chordwiki-plus-song-menu');
-titleElement.parentNode.insertBefore(chordwikiPlusSongMenuElement, titleElement.nextElementSibling);
-
-// スクロール位置がわかるバーを表示
-const scrollAfterimageTag = document.createElement('scroll-afterimage');
-scrollAfterimageTag.setAttribute('id', 'scroll-afterimage');
-lyrics.appendChild(scrollAfterimageTag);
-
-// ニコニコ動画を埋め込み
-const matchedNicoVideoID = document.body.innerHTML.match(/href=\"https\:\/\/www\.nicovideo\.jp\/watch\/(sm[0-9]+?)\"/);
-if (matchedNicoVideoID) {
-  const chordwikiPlusNicoVideoPlayerElement = document.createElement('nico-video-embed-player');
-  chordwikiPlusNicoVideoPlayerElement.setAttribute('movie', matchedNicoVideoID[1]);
-  titleElement.parentNode.insertBefore(chordwikiPlusNicoVideoPlayerElement, titleElement.nextElementSibling);
-}
-
-// YouTube動画を埋め込み
-const matchedYouTubeID = document.body.innerHTML.match(/href=\"https\:\/\/www\.youtube\.com\/watch\?v=(.+?)\"/);
-if (matchedYouTubeID) {
-  const chordwikiPlusYouTubePlayerElement = document.createElement('you-tube-embed-player');
-  chordwikiPlusYouTubePlayerElement.setAttribute('movie', matchedYouTubeID[1]);
-  titleElement.parentNode.insertBefore(chordwikiPlusYouTubePlayerElement, titleElement.nextElementSibling);
-}
-
-// タグ
-const tags = [];
-const tagElements = document.querySelectorAll('.tag a[itemprop=keywords]');
-for (const tagElement of tagElements) {
-  // @ts-ignore
-  tags.push(tagElement.innerText);
-}
-// @ts-ignore
-if (tags.legnth !== 0) {
-  const chordwikiPlusSongTagsElement = document.createElement('song-tags');
-  chordwikiPlusSongTagsElement.setAttribute(':tags', JSON.stringify(tags));
-  titleElement.parentNode.insertBefore(chordwikiPlusSongTagsElement, titleElement.nextElementSibling);
-}
-
-// メトロノームを追加
-document.body.innerHTML = document.body.innerHTML.replace(/(BPM.([0-9]+))/g, (match, capture1, capture2) => {
-  return `<metronome :bpm="${parseInt(capture2)}"></metronome>${capture1}`;
-});
+import { parse } from 'node-html-parser';
 
 //@ts-ignore
-import TransposeButton from './components/TransposeButton';
-//@ts-ignore
-import SongMenu from './components/SongMenu';
-//@ts-ignore
-import ScrollAfterimage from './components/ScrollAfterimage';
-//@ts-ignore
-import ChordDiagram from './components/ChordDiagram';
-//@ts-ignore
-import Metronome from './components/Metronome';
-//@ts-ignore
-import YouTubeEmbedPlayer from './components/YouTubeEmbedPlayer';
-//@ts-ignore
-import NicoVideoEmbedPlayer from './components/NicoVideoEmbedPlayer';
-//@ts-ignore
-import SongTags from './components/SongTags';
-new Vue({
-  el: '.main',
-  store: store,
-  components: {
-    TransposeButton,
-    SongMenu,
-    ScrollAfterimage,
-    ChordDiagram,
-    Metronome,
-    YouTubeEmbedPlayer,
-    NicoVideoEmbedPlayer,
-    SongTags,
-  },
-  data() {
-    return {
-      autoScrollTimer: null,
-    };
-  },
-  methods: {
-    toggleAutoScroll() {
-      if (this.$store.state.autoScroll.timer) {
-        this.$store.dispatch('autoScroll/stopAutoScroll');
-      } else {
-        this.$store.dispatch('autoScroll/runAutoScroll');
+import SongPage from './pages/Song';
+
+function parseChordpro(chordpro: string) {
+  let meta = {
+    title: '',
+    subtitle: '',
+    youtubeId: '',
+    nicoVideoId: '',
+    // links: [],
+  };
+
+  let lines = [];
+  const splittedLines = chordpro.replace(/\r/g, '').split('\n');
+  for (let i = 0; i < splittedLines.length; i++) {
+    let line = splittedLines[i];
+
+    if (line === '') {
+      if (i !== 0) {
+        lines.push({ type: 'emptyLine' });
       }
-    },
-  },
-  destroyed() {
-    if (this.$store.state.autoScroll.timer) {
-      this.$store.dispatch('autoScroll/stopAutoScroll');
+      continue;
     }
-  },
-});
 
-store.dispatch('config/restoreFromLocalStorage');
+    // {title:タイトル}
+    // {t:タイトル}
+    // 歌のタイトルを入れます。
+    const matchedTitle = line.match(/^\{(title|t|TITLE|T)\:(.+?)\}/);
+    if (matchedTitle) {
+      meta['title'] = matchedTitle[2];
+      continue;
+    }
 
-// メニューを削除
-document.getElementById('key').remove();
+    // {subtitle:サブタイトル}
+    // {st:サブタイトル}
+    // アーティスト名などを入れます。
+    const matchedSubtitle = line.match(/^\{(subtitle|st|SUBTITLE|ST)\:(.+?)\}/);
+    if (matchedSubtitle) {
+      meta['title'] = matchedSubtitle[2];
+      continue;
+    }
 
-// サイドバーを削除
-document.getElementById('side').remove();
+    // {comment:コメント}
+    // {c:コメント}
+    // コメントを入れます。（表示されます。）
+    const matchedComment = line.match(/^\{(comment|c|COMMENT|C)\:(.+?)\}/);
+    if (matchedComment) {
+      const matchedBPM = matchedComment[2].match(/(BPM.([0-9]+))/);
+      const queryString = require('query-string');
 
-// zenbackを削除
-document.getElementById('zenback-widget-loader').remove();
+      matchedComment[2] = matchedComment[2]
+        .replace(/</g, '&lt')
+        .replace(/>/g, '&gt')
+        .replace(/(♣|♠|♥|♦)/g, '<span class="$1">$1</span>')
+        .replace(/(移調\+[0-9]|移調\-[0-9]|移調[:： 　]\+[0-9]|移調[:： 　]\-[0-9])/g, (match) => {
+          const parsedQueries = queryString.parse(location.search);
+          const key = parseInt(match.replace(/[^0-9\-]/g, ''), 10);
+          const queries = {
+            c: parsedQueries.c,
+            t: parsedQueries.t,
+            key: key,
+            symbol: parsedQueries.symbol,
+          };
 
-// フッターを削除
-const footerElements = document.getElementsByClassName('footer');
-for (const footerElement of footerElements) {
-  footerElement.parentNode.removeChild(footerElement);
+          const stringifiedQuery = queryString.stringify(queries);
+          const url = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
+          return `<a href="${url}">${match}</a>`;
+        });
+
+      if (matchedBPM) {
+        lines.push({ type: 'comment', data: matchedComment[2], bpm: parseInt(matchedBPM[2]) });
+      } else {
+        lines.push({ type: 'comment', data: matchedComment[2] });
+      }
+      continue;
+    }
+
+    // {comment_italic:コメント}
+    // {ci:コメント}
+    // コメントを入れます。（イタリック表示）
+    const matchedCommentItalic = line.match(/^\{(comment_italic|ci|COMMENT_ITALIC|CI)\:(.+?)\}/);
+    if (matchedCommentItalic) {
+      const matchedBPM = matchedCommentItalic[2].match(/(BPM.([0-9]+))/);
+
+      matchedCommentItalic[2] = matchedCommentItalic[2]
+        .replace(/</g, '&lt')
+        .replace(/>/g, '&gt')
+        .replace(/(♣|♠|♥|♦)/g, '<span class="$1">$1</span>')
+        .replace(/(移調\+[0-9]|移調\-[0-9]|移調[:： 　]\+[0-9]|移調[:： 　]\-[0-9])/g, (match) => {
+          const parsedQueries = queryString.parse(location.search);
+          const key = parseInt(match.replace(/[^0-9\-]/g, ''), 10);
+          const queries = {
+            c: parsedQueries.c,
+            t: parsedQueries.t,
+            key: key,
+            symbol: parsedQueries.symbol,
+          };
+
+          const stringifiedQuery = queryString.stringify(queries);
+          const url = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
+          return `<a href="${url}">${match}</a>`;
+        });
+
+      if (matchedBPM) {
+        lines.push({ type: 'commentItalic', data: matchedCommentItalic[2], bpm: parseInt(matchedBPM[2]) });
+      } else {
+        lines.push({ type: 'commentItalic', data: matchedCommentItalic[2] });
+      }
+      continue;
+    }
+
+    // #コメント
+    // コメントを入れます。（表示されません）
+    const matchedHiddenComment = line.match(/^#(.+?)$/);
+    if (matchedHiddenComment) {
+      lines.push({ type: 'hiddenComment', data: matchedHiddenComment[2] });
+      continue;
+    }
+
+    // {key:キー}
+    // （移調前の）キーを記入します。
+    const matchedKey = line.match(/^\{(key|KEY)\:(.+?)\}/);
+    if (matchedKey) {
+      lines.push({ type: 'key', data: matchedKey[2].replace(/[b\-]/g, '♭').replace(/[#\+]/g, '♯') });
+      continue;
+    }
+
+    // {redirect:ページ名}
+    // 別のページに転送します。
+    const matchedRedirect = line.match(/^\{(redirect|REDIRECT)\:(.+?)\}/);
+    if (matchedRedirect) {
+      // TODO
+      continue;
+    }
+
+    // {asin:アマゾン商品コード}
+    // Amazon.co.jp の商品を指定します。※楽曲情報編集により上書きされます。
+    const matchedAmazonProductCode = line.match(/^\{(asin|ASIN)\:(.+?)\}/);
+    if (matchedAmazonProductCode) {
+      // TODO
+      continue;
+    }
+
+    // {youtube:〜}
+    // YouTube のビデオIDを指定します。※楽曲情報編集により上書きされます。
+    const matchedYouTubeId = line.match(/^\{(youtube|YOUTUBE)\:(.+?)\}/);
+    if (matchedYouTubeId) {
+      meta.youtubeId = matchedYouTubeId[2];
+      continue;
+    }
+
+    // {nicovideo:sm〜}
+    // ニコニコ動画の動画IDを指定します。※楽曲情報編集により上書きされます。
+    const matchedNicoVideoId = line.match(/^\{(nicovideo|NICOVIDEO)\:(.+?)\}/);
+    if (matchedNicoVideoId) {
+      meta.nicoVideoId = matchedNicoVideoId[2];
+      continue;
+    }
+
+    // {mp3:http://〜.mp3}
+    // MP3ファイルを指定します。
+    const matchedMP3 = line.match(/^\{(mp3|MP3)\:(.+?)\}/);
+    if (matchedMP3) {
+      // TODO
+      continue;
+    }
+
+    // {http(s)://〜}
+    // 楽曲情報としてリンクを表示します。（行の途中では不可）
+    const matchedHttpLink = line.match(/^\{((http|HTTP):\/\/.+?)\}/);
+    if (matchedHttpLink) {
+      // TODO
+      continue;
+    }
+
+    // {http(s)://〜}
+    // 楽曲情報としてリンクを表示します。（行の途中では不可）
+    const matchedHttpsLink = line.match(/^\{((https|HTTPS):\/\/.+?)\}/);
+    if (matchedHttpsLink) {
+      // TODO
+      continue;
+    }
+
+    // {リンクテキスト>http(s)://〜}
+    // 楽曲情報としてリンクを表示します。（行の途中では不可）
+    const matchedHttpLinkedText = line.match(/^\{(.*?)\>((http|HTTP):\/\/.+?)\}/);
+    if (matchedHttpLinkedText) {
+      // meta.links.push({
+      //   text: matchedHttpLinkedText[1],
+      //   url: matchedHttpLinkedText[2],
+      // });
+      continue;
+    }
+
+    // {リンクテキスト>http(s)://〜}
+    // 楽曲情報としてリンクを表示します。（行の途中では不可）
+    const matchedHttpsLinkedText = line.match(/^\{(.*?)\>((https|HTTPS):\/\/.+?)\}/);
+    if (matchedHttpsLinkedText) {
+      // meta.links.push({
+      //   text: matchedHttpsLinkedText[1],
+      //   url: matchedHttpsLinkedText[2],
+      // });
+      continue;
+    }
+
+    let splittedChordAndLyrics = [];
+    for (const l of line.split('[')) {
+      // let tempLyrics: string;
+      let res = {
+        chord: '',
+        lyrics: '',
+      };
+
+      const ll = l.match(/(.*?)\](.*?)$/);
+      const lll = l.match(/(.*?)\]$/);
+
+      if (ll) {
+        res.chord = ll[1];
+        res.lyrics = ll[2];
+      } else if (lll) {
+        res.chord = lll[1];
+        // res.lyrics =
+      } else {
+        // res.chord =
+        res.lyrics = l;
+      }
+
+      res.chord = res.chord.replace(/[b]/g, '♭').replace(/[#]/g, '♯');
+
+      res.lyrics = res.lyrics
+        .replace(/</g, '&lt')
+        .replace(/>/g, '&gt')
+        .replace(/(♣|♠|♥|♦)/g, '<span class="$1">$1</span>');
+
+      if (res.chord === '' && res.lyrics === '') {
+      } else {
+        splittedChordAndLyrics.push(res);
+      }
+    }
+
+    lines.push({ type: 'chordAndLyrics', data: splittedChordAndLyrics });
+  }
+
+  return { meta, lines };
 }
 
-// 自動スクロール速度調整ボタン
-const changeAutoScrollSpeedButton = document.createElement('change-auto-scroll-speed-button');
-changeAutoScrollSpeedButton.setAttribute('id', 'change-auto-scroll-speed-button');
-document.body.appendChild(changeAutoScrollSpeedButton);
+async function main() {
+  const SongPageElement = document.createElement('song-page');
+  SongPageElement.setAttribute('id', 'chordwiki-plus-song-page');
 
-//@ts-ignore
-import ChangeAutoScrollSpeedButton from './components/ChangeAutoScrollSpeedButton';
-new Vue({
-  el: '#change-auto-scroll-speed-button',
-  store: store,
-  components: {
-    ChangeAutoScrollSpeedButton,
-  },
-});
+  const queryString = require('query-string');
+  const parsedQueries = queryString.parse(location.search);
+  const queries = {
+    c: parsedQueries.c,
+    t: parsedQueries.t,
+    key: parseInt(parsedQueries.key, 10),
+    symbol: parsedQueries.symbol,
+  };
+  SongPageElement.setAttribute(':queries', JSON.stringify(queries));
 
-// 独自ヘッダー
-const customHeaderElement = document.createElement('custom-header');
-customHeaderElement.setAttribute('id', 'custom-header');
-document.getElementById('header').outerHTML = customHeaderElement.outerHTML;
+  // タイトル
+  const titleElement = document.getElementsByClassName('title')[0];
+  let title: string;
+  if (typeof titleElement === 'undefined') {
+    title = '';
+  } else {
+    // @ts-ignore
+    title = titleElement.innerText;
+  }
+  SongPageElement.setAttribute('title', title);
 
-//@ts-ignore
-import CustomHeader from './components/CustomHeader';
-new Vue({
-  el: '#custom-header',
-  store: store,
-  components: {
-    CustomHeader,
-  },
-});
+  // サブタイトル
+  const subtitleElement = document.getElementsByClassName('subtitle')[0];
+  let subtitle: string;
+  if (typeof subtitleElement === 'undefined') {
+    subtitle = '';
+  } else {
+    // @ts-ignore
+    subtitle = subtitleElement.innerText;
+  }
+  SongPageElement.setAttribute('subtitle', subtitle);
 
-// 独自フッター
-const customFooter = document.createElement('custom-footer');
-customFooter.setAttribute('id', 'custom-footer');
-document.body.appendChild(customFooter);
+  // タグ
+  const tags = [];
+  const tagElements = document.querySelectorAll('.tag a[itemprop=keywords]');
+  for (const tagElement of tagElements) {
+    // @ts-ignore
+    tags.push(tagElement.innerText);
+  }
+  SongPageElement.setAttribute(':tags', JSON.stringify(tags));
 
-//@ts-ignore
-import CustomFooter from './components/CustomFooter';
-new Vue({
-  el: '#custom-footer',
-  store: store,
-  components: {
-    CustomFooter,
-  },
-});
+  // コード譜
+  const chordpro = await axios.get(`wiki.cgi?c=edit&t=${queries.t}`).then((res) => {
+    return parse(res.data).querySelector('textarea').text;
+  });
+  const parseedChordpro = parseChordpro(chordpro);
+  SongPageElement.setAttribute(':parseed-chordpro', JSON.stringify(parseedChordpro.lines));
+
+  // YouTubeリンク
+  const matchedYouTubeId = document.body.innerHTML.match(/href=\"https\:\/\/www\.youtube\.com\/watch\?v=(.+?)\"/);
+
+  const info = await axios.get(`wiki.cgi?c=infoedit&t=${queries.t}`).then((res) => {
+    const parsedHTML = parse(res.data);
+    return {
+      // @ts-ignore
+      youtubeId: parsedHTML.querySelector('[name="youtube"]')._attrs.value,
+      // @ts-ignore
+      nicoVideoId: parsedHTML.querySelector('[name="niconico"]')._attrs.value,
+      // @ts-ignore
+      asin: parsedHTML.querySelector('[name="asin"]')._attrs.value,
+      // @ts-ignore
+      itunes: parsedHTML.querySelector('[name="itunes"]')._attrs.value,
+      // @ts-ignore
+      jasrac: parsedHTML.querySelector('[name="jasrac"]')._attrs.value,
+    };
+  });
+  SongPageElement.setAttribute('youtube-id', info.youtubeId || parseedChordpro.meta.youtubeId);
+  SongPageElement.setAttribute('nico-video-id', info.nicoVideoId || parseedChordpro.meta.nicoVideoId);
+
+  document.body.innerHTML = SongPageElement.outerHTML;
+
+  new Vue({
+    el: '#chordwiki-plus-song-page',
+    store: store,
+    components: {
+      SongPage,
+    },
+  });
+
+  store.dispatch('config/restoreFromLocalStorage');
+}
+
+main();

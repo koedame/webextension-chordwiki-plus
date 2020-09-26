@@ -44,17 +44,12 @@ export default {
 };
 </script>
 
-<style lang="sass">
-.chordwiki-plus-custom-footer
-  @import "~bulma/sass/utilities/_all"
-  @import "~bulma"
-  @import "~buefy/src/scss/buefy"
+<style lang="sass" scoped>
+.licence_image
+  width: 35px
+  height: 35px
 
-  .licence_image
-    width: 35px
-    height: 35px
-
-  .licence_text
-    font-size: 12px
-    padding-left: 1em
+.licence_text
+  font-size: 12px
+  padding-left: 1em
 </style>

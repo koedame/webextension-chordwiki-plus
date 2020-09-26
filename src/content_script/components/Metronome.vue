@@ -58,9 +58,8 @@ export default {
 
 .clock-hands
   display: inline-block
-  width: 6px
-  height: 12px
-  vertical-align: text-bottom
+  width: 5px
+  height: 10px
 
 .hide
   opacity: 0

@@ -1,40 +1,34 @@
 <template lang="pug">
-.chordwiki-plus-custom-header
-  b-navbar
-    template(slot='brand')
-      b-navbar-item(tag='a', href="/")
-        img(src='https://ja.chordwiki.org/logo.jpg')
-    template(slot='start')
-      b-navbar-item(tag="div")
-        form(@submit.prevent="onSearch")
-          b-field
-            b-input.search-input(placeholder="キーワードを入力", type='search', size="is-small", v-model="searchKeyword")
-            .control
-              b-button(size="is-small", type="is-info", @click="onSearch")
-                | 検索
-      b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
-        | ランキング
-      b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
-        | 閲覧履歴
+b-navbar(fixed-top, shadow)
+  template(slot='brand')
+    b-navbar-item(tag='a', href="/")
+      img(src='https://ja.chordwiki.org/logo.jpg')
+  template(slot='start')
+    b-navbar-item(tag="div")
+      form(@submit.prevent="onSearch")
+        b-field
+          //- TODO: 検索ワードを維持したい
+          b-input.search-input(placeholder="キーワードを入力", type='search', size="is-small", v-model="searchKeyword", icon="search")
+          .control
+            b-button(size="is-small", @click="onSearch")
+              | 検索
+    b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
+      | ランキング
+    b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
+      | 閲覧履歴
 
-    template(slot='end')
-      b-navbar-dropdown(label='楽曲メニュー', right)
-        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
-          | 編集
-        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=log&t=${queries.t}`")
-          | 履歴
-        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=note&t=${queries.t}`")
-          | ノート
-        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=rating&t=${queries.t}`")
-          | 評価
-        b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=addlist&t=${queries.t}`")
-          | セトリ登録
-
-      //- b-navbar-dropdown(label='その他')
-      //-   b-navbar-item(href='https://ja.chordwiki.org/random.cgi')
-      //-     | ランダム
-      //-   b-navbar-item(href='https://ja.chordwiki.org/cd.html')
-      //-     | コードブック
+  template(slot='end')
+    b-navbar-dropdown(label='楽曲メニュー', right)
+      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
+        | 編集
+      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=log&t=${queries.t}`")
+        | 履歴
+      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=note&t=${queries.t}`")
+        | ノート
+      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=rating&t=${queries.t}`")
+        | 評価
+      b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=addlist&t=${queries.t}`")
+        | セトリ登録
 </template>
 
 <script>
@@ -67,13 +61,7 @@ export default {
 };
 </script>
 
-<style lang="sass">
-.chordwiki-plus-custom-header
-  @import "~bulma/sass/utilities/_all"
-  $navbar-breakpoint: $tablet
-  @import "~bulma"
-  @import "~buefy/src/scss/buefy"
-
-  .search-input
-    min-width: 170px
+<style lang="sass" scoped>
+.search-input
+  min-width: calc(100vw - 600px)
 </style>
