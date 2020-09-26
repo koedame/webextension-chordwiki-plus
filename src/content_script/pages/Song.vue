@@ -233,7 +233,7 @@ export default {
   computed: {
     transeposedParseChordproLines() {
       // オリジナルのデータを参照して破壊しないようにする
-      let parseChordproLines = JSON.parse(JSON.stringify(this.parseedChordpro));
+      const parseChordproLines = JSON.parse(JSON.stringify(this.parseedChordpro));
 
       const parseChordproLinesLength = parseChordproLines.length;
       for (let i = 0; i < parseChordproLinesLength; i++) {
