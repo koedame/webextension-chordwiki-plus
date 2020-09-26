@@ -13,6 +13,8 @@
           a(href="https://ja.chordwiki.org/wiki.cgi?c=deleted") 削除済み
           a(href="http://seesaawiki.jp/w/chordwiki/") 楽曲リスト
           a(href="http://chordwiki.blog75.fc2.com/") ブログ
+          a(href="https://ja.chordwiki.org/cd.html") コードブック
+          a(href="https://ja.chordwiki.org/random.cgi") ランダム
 
     hr
 
