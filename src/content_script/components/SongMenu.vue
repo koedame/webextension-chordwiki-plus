@@ -1,80 +1,5 @@
 <template lang="pug">
 #chordwiki-plus-song-menu
-  hr
-
-  b-field
-    | 表記：
-    template(v-for='symbol in symbols')
-      b-radio-button(
-        v-if="symbol.value === ''",
-        :key="`symbol-${symbol.name}`",
-        v-model='queries.symbol',
-        :native-value='symbol.value',
-        type='is-info',
-        @input="onChangeQueries",
-        size="is-small"
-      )
-        span
-          | {{ symbol.name }}
-
-      b-radio-button(
-        v-else,
-        :key="`symbol-${symbol.name}`",
-        v-model='queries.symbol',
-        :native-value='symbol.value',
-        type='is-danger',
-        @input="onChangeQueries",
-        size="is-small"
-      )
-        span
-
-          | {{ symbol.name }}
-
-  b-field
-    | 移調：
-    template(v-for='transposeKey in transposeKeys')
-      b-radio-button(
-        v-if="transposeKey.value === 0",
-        :key="`transposeKey-${transposeKey.name}`",
-        v-model='queries.key',
-        :native-value='transposeKey.value',
-        type='is-info',
-        @input="onChangeQueries",
-        size="is-small"
-      )
-        span
-          | {{ transposeKey.name }}
-      b-radio-button(
-        v-else,
-        :key="`transposeKey-${transposeKey.name}`",
-        v-model='queries.key',
-        :native-value='transposeKey.value',
-        type='is-danger',
-        @input="onChangeQueries",
-        size="is-small"
-      )
-        span
-          | {{ transposeKey.name }}
-
-  b-field(label-position='on-border')
-    b-input.current-url(readonly, size="is-small", v-model="currentUrl", ref="urlInputTag")
-    p.control
-      b-button(v-if="isCopied", size="is-small", @click="copyUrl", type="is-success")
-        | ✔ コピーしました
-
-      b-button(v-else,size="is-small", @click="copyUrl")
-        | URLをコピー
-
-  hr
-
-  b-field(grouped)
-    .control
-      b-switch(v-model="$store.state.config.chordDiagram", type="is-info", size="is-small", @input="onChangeChordDiagram")
-        | コードダイアグラム
-
-    .control
-      b-switch(v-model="$store.state.config.scrollGuide", type="is-info", size="is-small", @input="onChangeScrollGuide")
-        | スクロールガイド
 </template>
 
 <script>
@@ -163,42 +88,9 @@ export default {
 };
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 #chordwiki-plus-song-menu
-  @import "~bulma/sass/utilities/_all"
-  @import "~bulma"
-  @import "~buefy/src/scss/buefy"
-
   .current-url
     max-width: 410px
     width: 100%
-
-.word
-  min-width: 16px
-  display: inline-block
-
-body
-  margin: 0
-
-div.main
-  margin-right: 80px
-
-.main
-  p.key
-    font-size: 12px
-    font-weight: bold
-    background: #f14668
-    color: #fff
-    display: inline-block
-    padding: 0 9px
-    border-radius: 3px
-
-  p.comment
-    strong
-      font-weight: bold
-      font-size: 12px
-      background: #e6e6e6
-      display: inline-block
-      padding: 0 8px
-      border-radius: 3px
 </style>

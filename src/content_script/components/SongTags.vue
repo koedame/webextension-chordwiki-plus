@@ -39,14 +39,5 @@ export default {
 
 <style lang="sass">
 .chordwiki-plus-song-tags
-  @import "~bulma/sass/utilities/_all"
-  @import "~bulma"
-  @import "~buefy/src/scss/buefy"
-
   margin-bottom: 1em
-
-h1.title
-  text-align: left
-h2.subtitle
-  text-align: left
 </style>
