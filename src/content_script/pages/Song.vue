@@ -370,7 +370,7 @@ $navbar-breakpoint: $tablet
   margin-bottom: 5px
   vertical-align: bottom
   .chord-diagram
-    filter: invert(22%) sepia(100%) saturate(1164%) hue-rotate(181deg) brightness(100%) contrast(100%);
+    filter: invert(22%) sepia(100%) saturate(1164%) hue-rotate(181deg) brightness(100%) contrast(100%)
 
     img
       display: inline-block
