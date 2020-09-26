@@ -3,7 +3,7 @@
   iframe.chordwiki-plus-you-tube-embed-player__iframe(
     width="500",
     height="150",
-    :src="`https://www.youtube.com/embed/${movie}`",
+    :src="`https://www.youtube.com/embed/${youtubeId}`",
     frameborder="0",
     allow="encrypted-media;",
     allowfullscreen
@@ -13,7 +13,7 @@
 <script>
 export default {
   props: {
-    movie: {
+    youtubeId: {
       type: String,
       require: true,
     },

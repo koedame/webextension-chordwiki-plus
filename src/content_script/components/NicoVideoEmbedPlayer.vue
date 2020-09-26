@@ -2,14 +2,14 @@
 #chordwiki-plus-nico-video-embed-player
   script(
     type="application/javascript",
-    :src="`https://embed.nicovideo.jp/watch/${movie}/script`"
+    :src="`https://embed.nicovideo.jp/watch/${nicoVideoId}/script`"
   )
 </template>
 
 <script>
 export default {
   props: {
-    movie: {
+    nicoVideoId: {
       type: String,
       require: true,
     },
