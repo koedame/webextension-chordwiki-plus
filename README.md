@@ -39,6 +39,7 @@ npm run watch:dev
 
 ```
 npm install
+rm -rf ./dist
 npm run build
 npm run build-zip
 ```
