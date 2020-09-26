@@ -238,6 +238,16 @@ export default {
       const parseChordproLinesLength = parseChordproLines.length;
       for (let i = 0; i < parseChordproLinesLength; i++) {
         if (parseChordproLines[i].type === 'key') {
+          if (this.q.symbol === 'flat') {
+            parseChordproLines[i].data = parseChordproLines[i].data.replace(/^(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)$/g, function (match) {
+              return notationTables.toFlat[match];
+            });
+          } else if (this.q.symbol === 'sharp') {
+            parseChordproLines[i].data = parseChordproLines[i].data.replace(/^(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)$/g, function (match) {
+              return notationTables.toSharp[match];
+            });
+          }
+
           if (this.q.key !== 0) {
             // 移調
             const matchedKeys = parseChordproLines[i].data.match(/^(.*?)(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)(.*?)$/);
