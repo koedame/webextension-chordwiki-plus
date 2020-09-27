@@ -15,7 +15,7 @@ const config = {
     // 'popup/popup': './popup/popup.js',
     // 'options/options': './options/options.js',
     'content_script/content_script': './content_script/content_script.ts',
-    'content_script/song_page': './content_script/song_page.ts',
+    'content_script/app': './content_script/app.ts',
     'content_script/song_page_redirect': './content_script/song_page_redirect.ts',
   },
   output: {
