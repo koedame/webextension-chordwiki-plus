@@ -131,7 +131,6 @@
 </template>
 
 <script>
-import queryString from 'query-string';
 import axios from 'axios';
 import { parse } from 'node-html-parser';
 
@@ -164,7 +163,7 @@ export default {
   data() {
     return {
       q: {
-        c: '',
+        c: 'view',
         t: '',
         key: 0,
         symbol: '',
@@ -212,12 +211,9 @@ export default {
     };
   },
   async mounted() {
-    const parsedQueries = queryString.parse(location.search);
-
-    this.q.c = parsedQueries.c;
-    this.q.t = parsedQueries.t;
-    this.q.key = parseInt(parsedQueries.key, 10);
-    this.q.symbol = parsedQueries.symbol;
+    this.q.t = this.$route.query.t;
+    this.q.key = parseInt(this.$route.query.key, 10);
+    this.q.symbol = this.$route.query.symbol;
 
     // タグ
     axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
@@ -347,11 +343,7 @@ export default {
     },
 
     onChangeQueries() {
-      const stringifiedQuery = queryString.stringify(this.q);
-
-      const nextUrl = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
-
-      window.history.replaceState(null, null, nextUrl);
+      this.$router.replace({ name: 'Song', query: this.q });
       this.currentUrl = location.href;
     },
 
