@@ -24,17 +24,20 @@ Vue.use(Clipboard);
 
 import store from '../store';
 
-const SongPageElement = document.createElement('song-page');
-SongPageElement.setAttribute('id', 'chordwiki-plus-song-page');
+const SongPageElement = document.createElement('app');
+SongPageElement.setAttribute('id', 'chordwiki-plus-app');
 document.body.innerHTML = SongPageElement.outerHTML;
 
+import router from './router';
+
 //@ts-ignore
-import SongPage from './pages/Song';
+import App from './App';
 new Vue({
-  el: '#chordwiki-plus-song-page',
-  store: store,
+  el: '#chordwiki-plus-app',
+  store,
+  router,
   components: {
-    SongPage,
+    App,
   },
 });
 
