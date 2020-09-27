@@ -125,7 +125,6 @@
             div
               | {{line}}
 
-  CustomFooter
   ChangeAutoScrollSpeedButton
   ScrollAfterimage
 </template>
@@ -152,7 +151,6 @@ export default {
   components: {
     CustomHeader,
     SongTags,
-    CustomFooter,
     ChangeAutoScrollSpeedButton,
     ScrollAfterimage,
     SongMenu,

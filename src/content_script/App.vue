@@ -1,6 +1,15 @@
 <template lang="pug">
 #syncroom-plus-app
-  <router-view/>
+  router-view
+  CustomFooter
 </template>
 
-<script></script>
+<script>
+import CustomFooter from './components/CustomFooter';
+
+export default {
+  components: {
+    CustomFooter,
+  },
+};
+</script>
