@@ -33,7 +33,7 @@ export default function parseChordpro(chordpro: string) {
     // アーティスト名などを入れます。
     const matchedSubtitle = line.match(/^\{(subtitle|st|SUBTITLE|ST)\:(.+?)\}/);
     if (matchedSubtitle) {
-      meta['title'] = matchedSubtitle[2];
+      meta['subtitle'] = matchedSubtitle[2];
       continue;
     }
 
