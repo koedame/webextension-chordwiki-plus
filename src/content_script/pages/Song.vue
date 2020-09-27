@@ -3,13 +3,13 @@
   CustomHeader
   .container
     .section
-      h1.title {{title}}
-      h2.subtitle {{subtitle}}
+      h1.title {{parseedChordpro.meta.title}}
+      h2.subtitle {{parseedChordpro.meta.subtitle}}
 
       SongTags(:tags="tags")
 
-      YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId")
-      NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId")
+      YouTubeEmbedPlayer(:youtube-id="parseedChordpro.meta.youtubeId", v-if="parseedChordpro.meta.youtubeId")
+      NicoVideoEmbedPlayer(:nico-video-id="parseedChordpro.meta.nicoVideoId", v-if="parseedChordpro.meta.nicoVideoId")
 
       hr
 
@@ -132,6 +132,8 @@
 
 <script>
 import queryString from 'query-string';
+import axios from 'axios';
+import { parse } from 'node-html-parser';
 
 import CustomHeader from '../components/CustomHeader';
 import SongTags from '../components/SongTags';
@@ -145,6 +147,7 @@ import Metronome from '../components/Metronome';
 
 import transeposeTables from '../../lib/transepose_tables';
 import notationTables from '../../lib/notation_tables';
+import parseChordpro from '../../lib/parse_chordpro';
 
 export default {
   components: {
@@ -158,46 +161,26 @@ export default {
     NicoVideoEmbedPlayer,
     Metronome,
   },
-  props: {
-    title: {
-      type: String,
-      required: false,
-    },
-    subtitle: {
-      type: String,
-      required: false,
-    },
-    tags: {
-      type: Array,
-      required: false,
-    },
-    parseedChordpro: {
-      type: Array,
-      required: false,
-    },
-    youtubeId: {
-      type: String,
-      required: false,
-    },
-    nicoVideoId: {
-      type: String,
-      required: false,
-    },
-    queries: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
     return {
       q: {
-        c: this.queries.c,
-        t: this.queries.t,
-        key: this.queries.key,
-        symbol: this.queries.symbol,
+        c: '',
+        t: '',
+        key: 0,
+        symbol: '',
       },
 
-      transeposeTables: transeposeTables,
+      tags: [],
+
+      parseedChordpro: {
+        lines: [],
+        meta: {
+          title: '',
+          subtitle: '',
+          youtubeId: '',
+          nicoVideoId: '',
+        },
+      },
 
       transposeKeys: [...Array(12).keys()].map((i) => {
         const num = ++i - 6;
@@ -228,12 +211,54 @@ export default {
       copyTimer: null,
     };
   },
-  mounted() {},
+  async mounted() {
+    const parsedQueries = queryString.parse(location.search);
+
+    this.q.c = parsedQueries.c;
+    this.q.t = parsedQueries.t;
+    this.q.key = parseInt(parsedQueries.key, 10);
+    this.q.symbol = parsedQueries.symbol;
+
+    // タグ
+    axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
+      this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+    });
+
+    // chordpro
+    await axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
+      this.parseedChordpro = parseChordpro(parse(res.data).querySelector('textarea').text);
+    });
+
+    // link
+    axios.get(`wiki.cgi?c=infoedit&t=${this.q.t}`).then((res) => {
+      const parsedHTML = parse(res.data);
+
+      if (parsedHTML.querySelector('[name="youtube"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="niconico"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="asin"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="itunes"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="jasrac"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
+      }
+    });
+  },
 
   computed: {
     transeposedParseChordproLines() {
       // オリジナルのデータを参照して破壊しないようにする
-      const parseChordproLines = JSON.parse(JSON.stringify(this.parseedChordpro));
+      const parseChordproLines = JSON.parse(JSON.stringify(this.parseedChordpro.lines));
 
       const parseChordproLinesLength = parseChordproLines.length;
       for (let i = 0; i < parseChordproLinesLength; i++) {
@@ -253,8 +278,6 @@ export default {
             const matchedKeys = parseChordproLines[i].data.match(/^(.*?)(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)(.*?)$/);
 
             let transeposedKey = matchedKeys[2];
-            transeposedKey = transeposeTables[this.q.key][transeposedKey];
-
             if (this.q.symbol === 'flat') {
               transeposedKey = notationTables.toFlat[transeposedKey];
             } else if (this.q.symbol === 'sharp') {
