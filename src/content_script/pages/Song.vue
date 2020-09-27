@@ -210,6 +210,15 @@ export default {
       copyTimer: null,
     };
   },
+  watch: {
+    // ブラウザバック時に更新されるように処理を入れる
+    $route(to, from) {
+      this.q.t = to.query.t;
+      this.q.key = parseInt(to.query.key, 10);
+      this.q.symbol = to.query.symbol;
+    },
+  },
+
   async mounted() {
     this.q.t = this.$route.query.t;
     this.q.key = parseInt(this.$route.query.key, 10);
