@@ -43,7 +43,7 @@
 //   'F♯': 'F',
 //   'G': 'G♭',
 //   'G♭': 'F',
-//   'G♯': 'G',
+//   'G♯': 'F',
 // }
 // transeposeTables = {}
 // for (let i = -11; i < 12; i++) {
@@ -339,7 +339,7 @@ const transeposeTables = {
     'F♯': 'G',
     G: 'A♭',
     'G♭': 'G',
-    'G♯': 'A',
+    'G♯': 'G',
   },
   '-10': {
     A: 'B',
@@ -362,7 +362,7 @@ const transeposeTables = {
     'F♯': 'A♭',
     G: 'A',
     'G♭': 'A♭',
-    'G♯': 'B♭',
+    'G♯': 'A♭',
   },
   '-9': {
     A: 'C',
@@ -385,7 +385,7 @@ const transeposeTables = {
     'F♯': 'A',
     G: 'B♭',
     'G♭': 'A',
-    'G♯': 'B',
+    'G♯': 'A',
   },
   '-8': {
     A: 'D♭',
@@ -408,7 +408,7 @@ const transeposeTables = {
     'F♯': 'B♭',
     G: 'B',
     'G♭': 'B♭',
-    'G♯': 'C',
+    'G♯': 'B♭',
   },
   '-7': {
     A: 'D',
@@ -431,7 +431,7 @@ const transeposeTables = {
     'F♯': 'B',
     G: 'C',
     'G♭': 'B',
-    'G♯': 'D♭',
+    'G♯': 'B',
   },
   '-6': {
     A: 'E♭',
@@ -454,7 +454,7 @@ const transeposeTables = {
     'F♯': 'C',
     G: 'D♭',
     'G♭': 'C',
-    'G♯': 'D',
+    'G♯': 'C',
   },
   '-5': {
     A: 'E',
@@ -477,7 +477,7 @@ const transeposeTables = {
     'F♯': 'D♭',
     G: 'D',
     'G♭': 'D♭',
-    'G♯': 'E♭',
+    'G♯': 'D♭',
   },
   '-4': {
     A: 'F',
@@ -500,7 +500,7 @@ const transeposeTables = {
     'F♯': 'D',
     G: 'E♭',
     'G♭': 'D',
-    'G♯': 'E',
+    'G♯': 'D',
   },
   '-3': {
     A: 'G♭',
@@ -523,7 +523,7 @@ const transeposeTables = {
     'F♯': 'E♭',
     G: 'E',
     'G♭': 'E♭',
-    'G♯': 'F',
+    'G♯': 'E♭',
   },
   '-2': {
     A: 'G',
@@ -546,7 +546,7 @@ const transeposeTables = {
     'F♯': 'E',
     G: 'F',
     'G♭': 'E',
-    'G♯': 'G♭',
+    'G♯': 'E',
   },
   '-1': {
     A: 'A♭',
@@ -569,7 +569,7 @@ const transeposeTables = {
     'F♯': 'F',
     G: 'G♭',
     'G♭': 'F',
-    'G♯': 'G',
+    'G♯': 'F',
   },
 };
 
