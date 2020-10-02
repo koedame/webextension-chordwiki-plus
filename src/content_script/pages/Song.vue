@@ -231,7 +231,13 @@ export default {
 
     // chordpro
     await axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
-      this.parseedChordpro = parseChordpro(parse(res.data).querySelector('textarea').text);
+      // <や>などが実体参照になっていなくてパースがうまくいかないので正規表現に頼る
+      // 複数行にマッチさせると指定範囲の取り出しができないので、replaceで不要な部分を削除している
+      const chordpro = res.data
+        .match(/<textarea name="chord" cols="120" rows="36">[\s\S]*?<\/textarea>/g)[0]
+        .replace('<textarea name="chord" cols="120" rows="36">', '')
+        .replace('</textarea>', '');
+      this.parseedChordpro = parseChordpro(chordpro);
     });
 
     // link
