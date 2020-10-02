@@ -3,13 +3,13 @@
   CustomHeader
   .container
     .section
-      h1.title {{title}}
-      h2.subtitle {{subtitle}}
+      h1.title {{parseedChordpro.meta.title}}
+      h2.subtitle {{parseedChordpro.meta.subtitle}}
 
       SongTags(:tags="tags")
 
-      YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId")
-      NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId")
+      YouTubeEmbedPlayer(:youtube-id="parseedChordpro.meta.youtubeId", v-if="parseedChordpro.meta.youtubeId")
+      NicoVideoEmbedPlayer(:nico-video-id="parseedChordpro.meta.nicoVideoId", v-if="parseedChordpro.meta.nicoVideoId")
 
       hr
 
@@ -131,7 +131,8 @@
 </template>
 
 <script>
-import queryString from 'query-string';
+import axios from 'axios';
+import { parse } from 'node-html-parser';
 
 import CustomHeader from '../components/CustomHeader';
 import SongTags from '../components/SongTags';
@@ -145,6 +146,7 @@ import Metronome from '../components/Metronome';
 
 import transeposeTables from '../../lib/transepose_tables';
 import notationTables from '../../lib/notation_tables';
+import parseChordpro from '../../lib/parse_chordpro';
 
 export default {
   components: {
@@ -158,46 +160,26 @@ export default {
     NicoVideoEmbedPlayer,
     Metronome,
   },
-  props: {
-    title: {
-      type: String,
-      required: false,
-    },
-    subtitle: {
-      type: String,
-      required: false,
-    },
-    tags: {
-      type: Array,
-      required: false,
-    },
-    parseedChordpro: {
-      type: Array,
-      required: false,
-    },
-    youtubeId: {
-      type: String,
-      required: false,
-    },
-    nicoVideoId: {
-      type: String,
-      required: false,
-    },
-    queries: {
-      type: Object,
-      required: true,
-    },
-  },
   data() {
     return {
       q: {
-        c: this.queries.c,
-        t: this.queries.t,
-        key: this.queries.key,
-        symbol: this.queries.symbol,
+        c: 'view',
+        t: '',
+        key: 0,
+        symbol: '',
       },
 
-      transeposeTables: transeposeTables,
+      tags: [],
+
+      parseedChordpro: {
+        lines: [],
+        meta: {
+          title: '',
+          subtitle: '',
+          youtubeId: '',
+          nicoVideoId: '',
+        },
+      },
 
       transposeKeys: [...Array(12).keys()].map((i) => {
         const num = ++i - 6;
@@ -228,23 +210,85 @@ export default {
       copyTimer: null,
     };
   },
-  mounted() {},
+  watch: {
+    // ブラウザバック時に更新されるように処理を入れる
+    $route(to, from) {
+      this.q.t = to.query.t;
+      this.q.key = parseInt(to.query.key, 10);
+      this.q.symbol = to.query.symbol;
+    },
+  },
+
+  async mounted() {
+    this.q.t = this.$route.query.t;
+    this.q.key = parseInt(this.$route.query.key, 10);
+    this.q.symbol = this.$route.query.symbol;
+
+    // タグ
+    axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
+      this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+    });
+
+    // chordpro
+    await axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
+      // <や>などが実体参照になっていなくてパースがうまくいかないので正規表現に頼る
+      // 複数行にマッチさせると指定範囲の取り出しができないので、replaceで不要な部分を削除している
+      const chordpro = res.data
+        .match(/<textarea name="chord" cols="120" rows="36">[\s\S]*?<\/textarea>/g)[0]
+        .replace('<textarea name="chord" cols="120" rows="36">', '')
+        .replace('</textarea>', '');
+      this.parseedChordpro = parseChordpro(chordpro);
+    });
+
+    // link
+    axios.get(`wiki.cgi?c=infoedit&t=${this.q.t}`).then((res) => {
+      const parsedHTML = parse(res.data);
+
+      if (parsedHTML.querySelector('[name="youtube"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="niconico"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="asin"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="itunes"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
+      }
+
+      if (parsedHTML.querySelector('[name="jasrac"]')._attrs.value !== '') {
+        this.parseedChordpro.meta.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
+      }
+    });
+  },
 
   computed: {
     transeposedParseChordproLines() {
       // オリジナルのデータを参照して破壊しないようにする
-      const parseChordproLines = JSON.parse(JSON.stringify(this.parseedChordpro));
+      const parseChordproLines = JSON.parse(JSON.stringify(this.parseedChordpro.lines));
 
       const parseChordproLinesLength = parseChordproLines.length;
       for (let i = 0; i < parseChordproLinesLength; i++) {
         if (parseChordproLines[i].type === 'key') {
+          if (this.q.symbol === 'flat') {
+            parseChordproLines[i].data = parseChordproLines[i].data.replace(/^(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)$/g, function (match) {
+              return notationTables.toFlat[match];
+            });
+          } else if (this.q.symbol === 'sharp') {
+            parseChordproLines[i].data = parseChordproLines[i].data.replace(/^(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)$/g, function (match) {
+              return notationTables.toSharp[match];
+            });
+          }
+
           if (this.q.key !== 0) {
             // 移調
             const matchedKeys = parseChordproLines[i].data.match(/^(.*?)(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)(.*?)$/);
 
             let transeposedKey = matchedKeys[2];
-            transeposedKey = transeposeTables[this.q.key][transeposedKey];
-
             if (this.q.symbol === 'flat') {
               transeposedKey = notationTables.toFlat[transeposedKey];
             } else if (this.q.symbol === 'sharp') {
@@ -314,11 +358,7 @@ export default {
     },
 
     onChangeQueries() {
-      const stringifiedQuery = queryString.stringify(this.q);
-
-      const nextUrl = `https://ja.chordwiki.org/wiki.cgi?${stringifiedQuery}`;
-
-      window.history.replaceState(null, null, nextUrl);
+      this.$router.replace({ name: 'Song', query: this.q });
       this.currentUrl = location.href;
     },
 

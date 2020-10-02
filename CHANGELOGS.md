@@ -1,5 +1,21 @@
 # CHANGELOGS
 
+## v2.0.2
+
+### 変更
+
+- vur-router 導入
+- キーの表記変更対応
+- chordpro の取得時の不具合を修正
+
+### 依存パッケージ
+
+- eslint-config-prettier from 6.11.0 to 6.12.0
+- eslint-plugin-import from 2.22.0 to 2.22.1
+- query-string from 6.13.2 to 6.13.3
+- moment from 2.28.0 to 2.29.0
+- node-html-parser from 1.2.20 to 1.2.21
+
 ## v2.0.1
 
 ### 変更
