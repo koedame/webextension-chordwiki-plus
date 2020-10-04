@@ -1,7 +1,7 @@
 <template lang="pug">
 b-navbar(fixed-top, shadow)
   template(slot='brand')
-    b-navbar-item(tag='a', href="/")
+    b-navbar-item(tag='router-link', :to="{name: 'home'}")
       img(src='https://ja.chordwiki.org/logo.jpg')
   template(slot='start')
     b-navbar-item(tag="div")
@@ -13,10 +13,15 @@ b-navbar(fixed-top, shadow)
             b-button(size="is-small", @click="onSearch")
               | 検索
     b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
-      | ランキング
+      b-icon(icon="chart-line", type="is-success")
+      span
+        |
+        | ランキング
     b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
-      | 閲覧履歴
-
+      b-icon(icon="history", type="is-info")
+      span
+        |
+        | 閲覧履歴
   template(slot='end')
     b-navbar-dropdown(label='楽曲メニュー', right)
       b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
@@ -63,5 +68,5 @@ export default {
 
 <style lang="sass" scoped>
 .search-input
-  min-width: calc(100vw - 600px)
+  min-width: calc(100vw - 700px)
 </style>
