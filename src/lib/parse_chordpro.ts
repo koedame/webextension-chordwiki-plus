@@ -22,7 +22,7 @@ export default function parseChordpro(chordpro: string) {
     // {title:タイトル}
     // {t:タイトル}
     // 歌のタイトルを入れます。
-    const matchedTitle = line.match(/^\{(title|t|TITLE|T)\:(.+?)\}/);
+    const matchedTitle = line.match(/^\{(title|t)\:(.+?)\}/i);
     if (matchedTitle) {
       meta['title'] = matchedTitle[2];
       continue;
@@ -31,7 +31,7 @@ export default function parseChordpro(chordpro: string) {
     // {subtitle:サブタイトル}
     // {st:サブタイトル}
     // アーティスト名などを入れます。
-    const matchedSubtitle = line.match(/^\{(subtitle|st|SUBTITLE|ST)\:(.+?)\}/);
+    const matchedSubtitle = line.match(/^\{(subtitle|st)\:(.+?)\}/i);
     if (matchedSubtitle) {
       meta['subtitle'] = matchedSubtitle[2];
       continue;
@@ -40,7 +40,7 @@ export default function parseChordpro(chordpro: string) {
     // {comment:コメント}
     // {c:コメント}
     // コメントを入れます。（表示されます。）
-    const matchedComment = line.match(/^\{(comment|c|COMMENT|C)\:(.+?)\}/);
+    const matchedComment = line.match(/^\{(comment|c)\:(.+?)\}/i);
     if (matchedComment) {
       const matchedBPM = matchedComment[2].match(/(BPM.([0-9]+))/);
       const queryString = require('query-string');
@@ -75,9 +75,9 @@ export default function parseChordpro(chordpro: string) {
     // {comment_italic:コメント}
     // {ci:コメント}
     // コメントを入れます。（イタリック表示）
-    const matchedCommentItalic = line.match(/^\{(comment_italic|ci|COMMENT_ITALIC|CI)\:(.+?)\}/);
+    const matchedCommentItalic = line.match(/^\{(comment_italic|ci)\:(.+?)\}/i);
     if (matchedCommentItalic) {
-      const matchedBPM = matchedCommentItalic[2].match(/(BPM.([0-9]+))/);
+      const matchedBPM = matchedCommentItalic[2].match(/(BPM.([0-9]+))/i);
 
       matchedCommentItalic[2] = matchedCommentItalic[2]
         .replace(/</g, '&lt')
@@ -116,7 +116,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {key:キー}
     // （移調前の）キーを記入します。
-    const matchedKey = line.match(/^\{(key|KEY)\:(.+?)\}/);
+    const matchedKey = line.match(/^\{(key)\:(.+?)\}/i);
     if (matchedKey) {
       lines.push({ type: 'key', data: matchedKey[2].replace(/[b\-]/g, '♭').replace(/[#\+]/g, '♯') });
       continue;
@@ -124,7 +124,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {redirect:ページ名}
     // 別のページに転送します。
-    const matchedRedirect = line.match(/^\{(redirect|REDIRECT)\:(.+?)\}/);
+    const matchedRedirect = line.match(/^\{(redirect)\:(.+?)\}/i);
     if (matchedRedirect) {
       // TODO
       continue;
@@ -132,7 +132,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {asin:アマゾン商品コード}
     // Amazon.co.jp の商品を指定します。※楽曲情報編集により上書きされます。
-    const matchedAmazonProductCode = line.match(/^\{(asin|ASIN)\:(.+?)\}/);
+    const matchedAmazonProductCode = line.match(/^\{(asin)\:(.+?)\}/i);
     if (matchedAmazonProductCode) {
       // TODO
       continue;
@@ -140,7 +140,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {youtube:〜}
     // YouTube のビデオIDを指定します。※楽曲情報編集により上書きされます。
-    const matchedYouTubeId = line.match(/^\{(youtube|YOUTUBE)\:(.+?)\}/);
+    const matchedYouTubeId = line.match(/^\{(youtube)\:(.+?)\}/i);
     if (matchedYouTubeId) {
       meta.youtubeId = matchedYouTubeId[2];
       continue;
@@ -148,7 +148,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {nicovideo:sm〜}
     // ニコニコ動画の動画IDを指定します。※楽曲情報編集により上書きされます。
-    const matchedNicoVideoId = line.match(/^\{(nicovideo|NICOVIDEO)\:(.+?)\}/);
+    const matchedNicoVideoId = line.match(/^\{(nicovideo)\:(.+?)\}/i);
     if (matchedNicoVideoId) {
       meta.nicoVideoId = matchedNicoVideoId[2];
       continue;
@@ -156,7 +156,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {mp3:http://〜.mp3}
     // MP3ファイルを指定します。
-    const matchedMP3 = line.match(/^\{(mp3|MP3)\:(.+?)\}/);
+    const matchedMP3 = line.match(/^\{(mp3)\:(.+?)\}/i);
     if (matchedMP3) {
       // TODO
       continue;
@@ -164,7 +164,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {http(s)://〜}
     // 楽曲情報としてリンクを表示します。（行の途中では不可）
-    const matchedHttpLink = line.match(/^\{((http|HTTP):\/\/.+?)\}/);
+    const matchedHttpLink = line.match(/^\{((http):\/\/.+?)\}/i);
     if (matchedHttpLink) {
       // TODO
       continue;
@@ -172,7 +172,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {http(s)://〜}
     // 楽曲情報としてリンクを表示します。（行の途中では不可）
-    const matchedHttpsLink = line.match(/^\{((https|HTTPS):\/\/.+?)\}/);
+    const matchedHttpsLink = line.match(/^\{((https):\/\/.+?)\}/i);
     if (matchedHttpsLink) {
       // TODO
       continue;
@@ -180,7 +180,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {リンクテキスト>http(s)://〜}
     // 楽曲情報としてリンクを表示します。（行の途中では不可）
-    const matchedHttpLinkedText = line.match(/^\{(.*?)\>((http|HTTP):\/\/.+?)\}/);
+    const matchedHttpLinkedText = line.match(/^\{(.*?)\>((http):\/\/.+?)\}/i);
     if (matchedHttpLinkedText) {
       // meta.links.push({
       //   text: matchedHttpLinkedText[1],
@@ -191,7 +191,7 @@ export default function parseChordpro(chordpro: string) {
 
     // {リンクテキスト>http(s)://〜}
     // 楽曲情報としてリンクを表示します。（行の途中では不可）
-    const matchedHttpsLinkedText = line.match(/^\{(.*?)\>((https|HTTPS):\/\/.+?)\}/);
+    const matchedHttpsLinkedText = line.match(/^\{(.*?)\>((https):\/\/.+?)\}/i);
     if (matchedHttpsLinkedText) {
       // meta.links.push({
       //   text: matchedHttpsLinkedText[1],
