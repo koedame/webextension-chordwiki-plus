@@ -57,3 +57,5 @@ npm run build-zip
   - https://ja.chordwiki.org/wiki.cgi?c=view&key=0&symbol=&t=%E3%83%86%E3%83%AC%E3%82%AD%E3%83%A3%E3%82%B9%E3%82%BF%E3%83%BC%E3%83%93%E3%83%BC%E3%83%9C%E3%83%BC%E3%82%A4
 - タイトル、サブタイトル、タグなどがない楽曲
   - https://ja.chordwiki.org/wiki.cgi?c=view&key=0&symbol=&t=%E7%B7%B4%E7%BF%92%E7%94%A8
+- 実体参照が必要な文字( `<` `>`など)が含まれている楽曲
+  - https://ja.chordwiki.org/wiki.cgi?c=view&key=0&symbol=&t=%E3%83%96%E3%83%AB%E3%83%BC%E3%82%A6%E3%82%A9%E3%83%BC%E3%82%BF%E3%83%BC
