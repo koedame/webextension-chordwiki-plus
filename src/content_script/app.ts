@@ -22,6 +22,9 @@ Vue.use(Buefy, {
 import Clipboard from 'v-clipboard';
 Vue.use(Clipboard);
 
+import VueMeta from 'vue-meta';
+Vue.use(VueMeta);
+
 import store from '../store';
 
 const SongPageElement = document.createElement('app');
