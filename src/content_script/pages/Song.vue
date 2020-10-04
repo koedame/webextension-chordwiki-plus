@@ -8,8 +8,8 @@
 
       SongTags(:tags="tags")
 
-      YouTubeEmbedPlayer(:youtube-id="parseedChordpro.meta.youtubeId", v-if="parseedChordpro.meta.youtubeId")
-      NicoVideoEmbedPlayer(:nico-video-id="parseedChordpro.meta.nicoVideoId", v-if="parseedChordpro.meta.nicoVideoId")
+      YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId !== ''")
+      NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId !== ''")
 
       hr
 
@@ -169,6 +169,14 @@ export default {
 
       tags: [],
 
+      info: {
+        youtubeId: '',
+        nicoVideoId: '',
+        asin: '',
+        itunes: '',
+        jasrac: '',
+      },
+
       parseedChordpro: {
         lines: [],
         meta: {
@@ -217,7 +225,7 @@ export default {
     },
   },
 
-  async mounted() {
+  mounted() {
     this.q.t = this.$route.query.t;
     this.q.key = parseInt(this.$route.query.key, 10);
     this.q.symbol = this.$route.query.symbol;
@@ -228,7 +236,7 @@ export default {
     });
 
     // chordpro
-    await axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
+    axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
       this.parseedChordpro = parseChordpro(parse(res.data).querySelector('textarea').text);
     });
 
@@ -237,28 +245,46 @@ export default {
       const parsedHTML = parse(res.data);
 
       if (parsedHTML.querySelector('[name="youtube"]')._attrs.value !== '') {
-        this.parseedChordpro.meta.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
+        this.info.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
       }
 
       if (parsedHTML.querySelector('[name="niconico"]')._attrs.value !== '') {
-        this.parseedChordpro.meta.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
+        this.info.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
       }
 
       if (parsedHTML.querySelector('[name="asin"]')._attrs.value !== '') {
-        this.parseedChordpro.meta.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
+        this.info.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
       }
 
       if (parsedHTML.querySelector('[name="itunes"]')._attrs.value !== '') {
-        this.parseedChordpro.meta.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
+        this.info.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
       }
 
       if (parsedHTML.querySelector('[name="jasrac"]')._attrs.value !== '') {
-        this.parseedChordpro.meta.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
+        this.info.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
       }
     });
   },
 
   computed: {
+    youtubeId() {
+      if (this.info.youtubeId !== '') {
+        return this.info.youtubeId;
+      } else if (this.parseedChordpro.meta.youtubeId !== '') {
+        return this.parseedChordpro.meta.youtubeId;
+      } else {
+        return '';
+      }
+    },
+    nicoVideoId() {
+      if (this.info.nicoVideoId !== '') {
+        return this.info.nicoVideoId;
+      } else if (this.parseedChordpro.meta.nicoVideoId !== '') {
+        return this.parseedChordpro.meta.nicoVideoId;
+      } else {
+        return '';
+      }
+    },
     transeposedParseChordproLines() {
       // オリジナルのデータを参照して破壊しないようにする
       const parseChordproLines = JSON.parse(JSON.stringify(this.parseedChordpro.lines));
@@ -350,7 +376,7 @@ export default {
     },
 
     onChangeQueries() {
-      this.$router.replace({ name: 'Song', query: this.q });
+      this.$router.replace({ name: 'song', query: this.q });
       this.currentUrl = location.href;
     },
 
