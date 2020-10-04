@@ -12,7 +12,12 @@
         template(v-else)
           | {{parseedChordpro.meta.subtitle}}
 
-      SongTags(:tags="tags")
+      .chordwiki-plus-song-page-tags
+        .buttons
+          b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light", size="is-small")
+            | {{tag}}
+          b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${q.t}`", size="is-small")
+            | タグを編集
 
       b-skeleton(v-if="isLoading", height="150px")
       template(v-else)
@@ -144,7 +149,6 @@ import axios from 'axios';
 import { parse } from 'node-html-parser';
 
 import CustomHeader from '../components/CustomHeader';
-import SongTags from '../components/SongTags';
 import ChangeAutoScrollSpeedButton from '../components/ChangeAutoScrollSpeedButton';
 import ScrollAfterimage from '../components/ScrollAfterimage';
 import SongMenu from '../components/SongMenu';
@@ -159,7 +163,6 @@ import parseChordpro from '../../lib/parse_chordpro';
 export default {
   components: {
     CustomHeader,
-    SongTags,
     ChangeAutoScrollSpeedButton,
     ScrollAfterimage,
     SongMenu,
@@ -501,4 +504,7 @@ $navbar-breakpoint: $tablet
   font-size: 14px
   margin: 10px 0
   font-style: italic
+
+.chordwiki-plus-song-page-tags
+  margin-bottom: 1em
 </style>
