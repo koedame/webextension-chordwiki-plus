@@ -5,16 +5,21 @@
       .menu
         .menu-label メニュー
         .menu-list
-          a(href="https://ja.chordwiki.org/") ホーム
+          router-link(:to="{name: 'home'}") ホーム
           a(href="https://ja.chordwiki.org/TermOfUse.html") 利用規約
           a(href="https://ja.chordwiki.org/Guideline.html") 編集ガイドライン
           a(href="https://ja.chordwiki.org/help.html") ヘルプ
-          a(href="https://ja.chordwiki.org/setlists.cgi") 新着セトリ
+          a(href="https://ja.chordwiki.org/setlists.cgi") 新着セットリスト
           a(href="https://ja.chordwiki.org/wiki.cgi?c=deleted") 削除済み
-          a(href="http://seesaawiki.jp/w/chordwiki/") 楽曲リスト
-          a(href="http://chordwiki.blog75.fc2.com/") ブログ
           a(href="https://ja.chordwiki.org/cd.html") コードブック
-          a(href="https://ja.chordwiki.org/random.cgi") ランダム
+          a(href="https://ja.chordwiki.org/random.cgi") ランダム表示
+          a(href="https://ja.chordwiki.org/wiki.cgi?c=editlist") マイセットリスト
+          a(href="https://ja.chordwiki.org/tagcloud.html") タグ一覧
+          a(href="https://ja.chordwiki.org/list/1.html") 楽曲一覧
+          a(href="https://ja.chordwiki.org/new.html") 新規作成
+          a(href="http://chordwiki.blog75.fc2.com/") ブログ
+          a(href="http://jbbs.shitaraba.net/music/25009/") 掲示板
+          a(href="https://ja.chordwiki.org/search2.html#gsc.tab=0") 横断検索
 
     hr
 
