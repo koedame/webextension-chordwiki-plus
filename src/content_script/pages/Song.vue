@@ -86,10 +86,10 @@
       b-field(label-position='on-border')
         b-input.current-url(readonly, size="is-small", v-model="currentUrl", ref="urlInputTag")
         p.control
-          b-button(v-if="isCopied", size="is-small", @click="copyUrl", type="is-success")
-            | ✔ コピーしました
+          b-button(v-if="isCopied", size="is-small", @click="copyUrl", type="is-success", icon-left="clipboard-check")
+            | コピーしました
 
-          b-button(v-else,size="is-small", @click="copyUrl")
+          b-button(v-else,size="is-small", @click="copyUrl", icon-left="clipboard")
             | URLをコピー
 
       hr
