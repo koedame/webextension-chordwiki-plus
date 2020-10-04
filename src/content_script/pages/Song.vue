@@ -429,5 +429,11 @@ export default {
     //     this.$store.dispatch('autoScroll/stopAutoScroll');
     //   }
   },
+
+  metaInfo() {
+    return {
+      title: `${this.parseedChordpro.meta.title} - コード譜`,
+    };
+  },
 };
 </script>

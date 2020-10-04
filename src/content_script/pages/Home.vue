@@ -180,6 +180,10 @@ export default {
       });
     },
   },
+
+  metaInfo: {
+    title: 'ChordWiki',
+  },
 };
 </script>
 
