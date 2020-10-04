@@ -14,14 +14,10 @@
 
       .chordwiki-plus-song-page-tags
         .buttons
-          b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light", size="is-small")
-            b-icon(icon="tag")
-            span
-              | {{tag}}
-          b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${q.t}`", size="is-small")
-            b-icon(icon="pen")
-            span
-              | タグを編集
+          b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light", size="is-small", icon-left="tag")
+            | {{tag}}
+          b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${q.t}`", size="is-small", icon-left="pen")
+            | タグを編集
 
       b-skeleton(v-if="isLoading", height="150px")
       template(v-else)
