@@ -135,7 +135,6 @@ import { parse } from 'node-html-parser';
 
 import CustomHeader from '../components/CustomHeader';
 import SongTags from '../components/SongTags';
-import CustomFooter from '../components/CustomFooter';
 import ChangeAutoScrollSpeedButton from '../components/ChangeAutoScrollSpeedButton';
 import ScrollAfterimage from '../components/ScrollAfterimage';
 import SongMenu from '../components/SongMenu';

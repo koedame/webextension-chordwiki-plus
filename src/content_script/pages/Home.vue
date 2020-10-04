@@ -109,9 +109,9 @@
 </template>
 
 <script>
-const contentBrowser = require('webextension-polyfill');
 import axios from 'axios';
 import { parse } from 'node-html-parser';
+const contentBrowser = require('webextension-polyfill');
 
 export default {
   data() {
