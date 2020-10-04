@@ -63,9 +63,9 @@ $navbar-breakpoint: $tablet
   height: 2em
 
 .key
-  background: #f14668
+  background: #feecf0
   border-radius: 2px
-  color: #fff
+  color: #cc0f35
   padding: 0 8px
   font-weight: bold
   display: inline-block
@@ -97,4 +97,7 @@ $navbar-breakpoint: $tablet
 
 .icon
   vertical-align: bottom
+
+.chordwiki-plus-song-page-tags
+  margin-bottom: 1em
 </style>
