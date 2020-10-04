@@ -307,6 +307,9 @@ export default {
             const matchedKeys = parseChordproLines[i].data.match(/^(.*?)(A♭|A♯|A|B♭|B♯|B|C♭|C♯|C|D♭|D♯|D|E♭|E♯|E|F♭|F♯|F|G♭|G♯|G)(.*?)$/);
 
             let transeposedKey = matchedKeys[2];
+
+            transeposedKey = transeposeTables[this.q.key][transeposedKey];
+
             if (this.q.symbol === 'flat') {
               transeposedKey = notationTables.toFlat[transeposedKey];
             } else if (this.q.symbol === 'sharp') {
