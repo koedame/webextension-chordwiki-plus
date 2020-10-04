@@ -3,13 +3,21 @@
   CustomHeader
   .container
     .section
-      h1.title {{parseedChordpro.meta.title}}
-      h2.subtitle {{parseedChordpro.meta.subtitle}}
+      h1.title
+        b-skeleton(v-if="isLoading", height="36px")
+        template(v-else)
+          | {{parseedChordpro.meta.title}}
+      h2.subtitle
+        b-skeleton(v-if="isLoading", height="25px")
+        template(v-else)
+          | {{parseedChordpro.meta.subtitle}}
 
       SongTags(:tags="tags")
 
-      YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId !== ''")
-      NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId !== ''")
+      b-skeleton(v-if="isLoading", height="150px")
+      template(v-else)
+        YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId !== ''")
+        NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId !== ''")
 
       hr
 
@@ -87,43 +95,45 @@
             | スクロールガイド
 
       #chordwiki-plus-lyrics
-        div(v-for="line in transeposedParseChordproLines")
-          template(v-if="line.type === 'chordAndLyrics'")
-            span.chord-and-lyrics(v-for="data in line.data")
-              span.chord-diagram(v-if="$store.state.config.chordDiagram")
-                img(:src="data.chordDiagram")
-              span.chord(v-else)
-                | {{data.chord}}
-              span.lyrics(v-html="sanitizeHTML(data.lyrics)")
+        b-skeleton(v-if="isLoading", size="is-medium", :count="100")
+        template(v-else)
+          div(v-for="line in transeposedParseChordproLines")
+            template(v-if="line.type === 'chordAndLyrics'")
+              span.chord-and-lyrics(v-for="data in line.data")
+                span.chord-diagram(v-if="$store.state.config.chordDiagram")
+                  img(:src="data.chordDiagram")
+                span.chord(v-else)
+                  | {{data.chord}}
+                span.lyrics(v-html="sanitizeHTML(data.lyrics)")
 
-          template(v-else-if="line.type === 'comment'")
-            .comment(v-if="line.bpm")
-              Metronome(:bpm="line.bpm")
-              span(v-html="line.data")
-            .comment(v-else)
-              span(v-html="line.data")
+            template(v-else-if="line.type === 'comment'")
+              .comment(v-if="line.bpm")
+                Metronome(:bpm="line.bpm")
+                span(v-html="line.data")
+              .comment(v-else)
+                span(v-html="line.data")
 
-          template(v-else-if="line.type === 'commentItalic'")
-            .comment-italic(v-if="line.bpm")
-              Metronome(:bpm="line.bpm")
-              | {{line.data}}
-            .comment-italic
-              | {{line.data}}
+            template(v-else-if="line.type === 'commentItalic'")
+              .comment-italic(v-if="line.bpm")
+                Metronome(:bpm="line.bpm")
+                | {{line.data}}
+              .comment-italic
+                | {{line.data}}
 
-          template(v-else-if="line.type === 'key'")
-            .key(v-if="q.key === 0")
-              | キー：{{line.data}}
-            .key(v-else)
-              | キー：{{line.transeposedKey}} （移調前：{{line.data}}）
+            template(v-else-if="line.type === 'key'")
+              .key(v-if="q.key === 0")
+                | キー：{{line.data}}
+              .key(v-else)
+                | キー：{{line.transeposedKey}} （移調前：{{line.data}}）
 
-          template(v-else-if="line.type === 'emptyLine'")
-            .empty-line
+            template(v-else-if="line.type === 'emptyLine'")
+              .empty-line
 
-          template(v-else-if="line.type === 'hiddenComment'")
+            template(v-else-if="line.type === 'hiddenComment'")
 
-          template(v-else)
-            div
-              | {{line}}
+            template(v-else)
+              div
+                | {{line}}
 
   ChangeAutoScrollSpeedButton
   ScrollAfterimage
@@ -213,6 +223,7 @@ export default {
 
       isCopied: false,
       copyTimer: null,
+      isLoading: true,
     };
   },
   watch: {
@@ -229,45 +240,49 @@ export default {
     this.q.key = parseInt(this.$route.query.key, 10);
     this.q.symbol = this.$route.query.symbol;
 
-    // タグ
-    axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
-      this.tags = parse(res.data).querySelector('textarea').text.split('\n');
-    });
+    Promise.all([
+      // タグ
+      axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
+        this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+      }),
 
-    // chordpro
-    axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
-      // <や>などが実体参照になっていなくてパースがうまくいかないので正規表現に頼る
-      // 複数行にマッチさせると指定範囲の取り出しができないので、replaceで不要な部分を削除している
-      const chordpro = res.data
-        .match(/<textarea name="chord" cols="120" rows="36">[\s\S]*?<\/textarea>/g)[0]
-        .replace('<textarea name="chord" cols="120" rows="36">', '')
-        .replace('</textarea>', '');
-      this.parseedChordpro = parseChordpro(chordpro);
-    });
+      // chordpro
+      axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
+        // <や>などが実体参照になっていなくてパースがうまくいかないので正規表現に頼る
+        // 複数行にマッチさせると指定範囲の取り出しができないので、replaceで不要な部分を削除している
+        const chordpro = res.data
+          .match(/<textarea name="chord" cols="120" rows="36">[\s\S]*?<\/textarea>/g)[0]
+          .replace('<textarea name="chord" cols="120" rows="36">', '')
+          .replace('</textarea>', '');
+        this.parseedChordpro = parseChordpro(chordpro);
+      }),
 
-    // link
-    axios.get(`wiki.cgi?c=infoedit&t=${this.q.t}`).then((res) => {
-      const parsedHTML = parse(res.data);
+      // link
+      axios.get(`wiki.cgi?c=infoedit&t=${this.q.t}`).then((res) => {
+        const parsedHTML = parse(res.data);
 
-      if (parsedHTML.querySelector('[name="youtube"]')._attrs.value !== '') {
-        this.info.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="youtube"]')._attrs.value !== '') {
+          this.info.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="niconico"]')._attrs.value !== '') {
-        this.info.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="niconico"]')._attrs.value !== '') {
+          this.info.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="asin"]')._attrs.value !== '') {
-        this.info.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="asin"]')._attrs.value !== '') {
+          this.info.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="itunes"]')._attrs.value !== '') {
-        this.info.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="itunes"]')._attrs.value !== '') {
+          this.info.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="jasrac"]')._attrs.value !== '') {
-        this.info.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="jasrac"]')._attrs.value !== '') {
+          this.info.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
+        }
+      }),
+    ]).then((res) => {
+      this.isLoading = false;
     });
   },
 
