@@ -50,8 +50,9 @@
                 | 検索
 
       .buttons.tags-buttons
-        | 人気のタグ：
-        b-button(type="is-light", v-for="tag in popularTags", tag="a", :href="tag.link", :key="tag.title", size="is-small") {{tag.title}}
+        span
+          | 人気のタグ：
+        b-button(type="is-light", v-for="tag in popularTags", tag="a", :href="tag.link", :key="tag.title", size="is-small", icon-left="tag") {{tag.title}}
 
   .container
     .section
