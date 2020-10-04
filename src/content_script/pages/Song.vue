@@ -15,9 +15,13 @@
       .chordwiki-plus-song-page-tags
         .buttons
           b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light", size="is-small")
-            | {{tag}}
+            b-icon(icon="tag")
+            span
+              | {{tag}}
           b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${q.t}`", size="is-small")
-            | タグを編集
+            b-icon(icon="pen")
+            span
+              | タグを編集
 
       b-skeleton(v-if="isLoading", height="150px")
       template(v-else)
