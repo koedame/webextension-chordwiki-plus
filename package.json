@@ -1,6 +1,6 @@
 {
   "name": "chordwiki-plus",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "author": "",
   "engines": {
     "node": ">=10"
@@ -38,6 +38,7 @@
     "query-string": "^6.13.3",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
+    "vue-meta": "^2.4.0",
     "vue-moment": "^4.1.0",
     "vue-router": "^3.4.5",
     "vuex": "^3.0.1",

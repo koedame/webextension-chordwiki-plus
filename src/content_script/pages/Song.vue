@@ -3,13 +3,28 @@
   CustomHeader
   .container
     .section
-      h1.title {{parseedChordpro.meta.title}}
-      h2.subtitle {{parseedChordpro.meta.subtitle}}
+      h1.title
+        b-skeleton(v-if="isLoading", height="36px")
+        template(v-else)
+          | {{parseedChordpro.meta.title}}
+      h2.subtitle
+        b-skeleton(v-if="isLoading", height="25px")
+        template(v-else)
+          | {{parseedChordpro.meta.subtitle}}
 
-      SongTags(:tags="tags")
+      .chordwiki-plus-song-page-tags
+        .buttons
+          b-button(v-for="tag in tags", :key="tag", tag="a", :href="`https://ja.chordwiki.org/tag/${tag}`", type="is-light", size="is-small", icon-left="tag")
+            | {{tag}}
+          b-button(type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=tagedit&t=${q.t}`", size="is-small", icon-left="pen")
+            | タグを編集
 
-      YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId !== ''")
-      NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId !== ''")
+      b-skeleton(v-if="isLoading", height="150px")
+      template(v-else)
+        YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId !== ''")
+        NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId !== ''")
+
+      b-button(size="is-small", type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=infoedit&t=${q.t}`", icon-left="pen") 動画を設定・編集
 
       hr
 
@@ -69,10 +84,10 @@
       b-field(label-position='on-border')
         b-input.current-url(readonly, size="is-small", v-model="currentUrl", ref="urlInputTag")
         p.control
-          b-button(v-if="isCopied", size="is-small", @click="copyUrl", type="is-success")
-            | ✔ コピーしました
+          b-button(v-if="isCopied", size="is-small", @click="copyUrl", type="is-success", icon-left="clipboard-check")
+            | コピーしました
 
-          b-button(v-else,size="is-small", @click="copyUrl")
+          b-button(v-else,size="is-small", @click="copyUrl", icon-left="clipboard")
             | URLをコピー
 
       hr
@@ -87,43 +102,45 @@
             | スクロールガイド
 
       #chordwiki-plus-lyrics
-        div(v-for="line in transeposedParseChordproLines")
-          template(v-if="line.type === 'chordAndLyrics'")
-            span.chord-and-lyrics(v-for="data in line.data")
-              span.chord-diagram(v-if="$store.state.config.chordDiagram")
-                img(:src="data.chordDiagram")
-              span.chord(v-else)
-                | {{data.chord}}
-              span.lyrics(v-html="sanitizeHTML(data.lyrics)")
+        b-skeleton(v-if="isLoading", size="is-medium", :count="100")
+        template(v-else)
+          div(v-for="line in transeposedParseChordproLines")
+            template(v-if="line.type === 'chordAndLyrics'")
+              span.chord-and-lyrics(v-for="data in line.data")
+                span.chord-diagram(v-if="$store.state.config.chordDiagram")
+                  img(:src="data.chordDiagram")
+                span.chord(v-else)
+                  | {{data.chord}}
+                span.lyrics(v-html="sanitizeHTML(data.lyrics)")
 
-          template(v-else-if="line.type === 'comment'")
-            .comment(v-if="line.bpm")
-              Metronome(:bpm="line.bpm")
-              span(v-html="line.data")
-            .comment(v-else)
-              span(v-html="line.data")
+            template(v-else-if="line.type === 'comment'")
+              .comment(v-if="line.bpm")
+                Metronome(:bpm="line.bpm")
+                span(v-html="line.data")
+              .comment(v-else)
+                span(v-html="line.data")
 
-          template(v-else-if="line.type === 'commentItalic'")
-            .comment-italic(v-if="line.bpm")
-              Metronome(:bpm="line.bpm")
-              | {{line.data}}
-            .comment-italic
-              | {{line.data}}
+            template(v-else-if="line.type === 'commentItalic'")
+              .comment-italic(v-if="line.bpm")
+                Metronome(:bpm="line.bpm")
+                | {{line.data}}
+              .comment-italic
+                | {{line.data}}
 
-          template(v-else-if="line.type === 'key'")
-            .key(v-if="q.key === 0")
-              | キー：{{line.data}}
-            .key(v-else)
-              | キー：{{line.transeposedKey}} （移調前：{{line.data}}）
+            template(v-else-if="line.type === 'key'")
+              .key(v-if="q.key === 0")
+                | キー：{{line.data}}
+              .key(v-else)
+                | キー：{{line.transeposedKey}} （移調前：{{line.data}}）
 
-          template(v-else-if="line.type === 'emptyLine'")
-            .empty-line
+            template(v-else-if="line.type === 'emptyLine'")
+              .empty-line
 
-          template(v-else-if="line.type === 'hiddenComment'")
+            template(v-else-if="line.type === 'hiddenComment'")
 
-          template(v-else)
-            div
-              | {{line}}
+            template(v-else)
+              div
+                | {{line}}
 
   ChangeAutoScrollSpeedButton
   ScrollAfterimage
@@ -134,7 +151,6 @@ import axios from 'axios';
 import { parse } from 'node-html-parser';
 
 import CustomHeader from '../components/CustomHeader';
-import SongTags from '../components/SongTags';
 import ChangeAutoScrollSpeedButton from '../components/ChangeAutoScrollSpeedButton';
 import ScrollAfterimage from '../components/ScrollAfterimage';
 import SongMenu from '../components/SongMenu';
@@ -149,7 +165,6 @@ import parseChordpro from '../../lib/parse_chordpro';
 export default {
   components: {
     CustomHeader,
-    SongTags,
     ChangeAutoScrollSpeedButton,
     ScrollAfterimage,
     SongMenu,
@@ -213,6 +228,7 @@ export default {
 
       isCopied: false,
       copyTimer: null,
+      isLoading: true,
     };
   },
   watch: {
@@ -229,45 +245,49 @@ export default {
     this.q.key = parseInt(this.$route.query.key, 10);
     this.q.symbol = this.$route.query.symbol;
 
-    // タグ
-    axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
-      this.tags = parse(res.data).querySelector('textarea').text.split('\n');
-    });
+    Promise.all([
+      // タグ
+      axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
+        this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+      }),
 
-    // chordpro
-    axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
-      // <や>などが実体参照になっていなくてパースがうまくいかないので正規表現に頼る
-      // 複数行にマッチさせると指定範囲の取り出しができないので、replaceで不要な部分を削除している
-      const chordpro = res.data
-        .match(/<textarea name="chord" cols="120" rows="36">[\s\S]*?<\/textarea>/g)[0]
-        .replace('<textarea name="chord" cols="120" rows="36">', '')
-        .replace('</textarea>', '');
-      this.parseedChordpro = parseChordpro(chordpro);
-    });
+      // chordpro
+      axios.get(`wiki.cgi?c=edit&t=${this.q.t}`).then((res) => {
+        // <や>などが実体参照になっていなくてパースがうまくいかないので正規表現に頼る
+        // 複数行にマッチさせると指定範囲の取り出しができないので、replaceで不要な部分を削除している
+        const chordpro = res.data
+          .match(/<textarea name="chord" cols="120" rows="36">[\s\S]*?<\/textarea>/g)[0]
+          .replace('<textarea name="chord" cols="120" rows="36">', '')
+          .replace('</textarea>', '');
+        this.parseedChordpro = parseChordpro(chordpro);
+      }),
 
-    // link
-    axios.get(`wiki.cgi?c=infoedit&t=${this.q.t}`).then((res) => {
-      const parsedHTML = parse(res.data);
+      // link
+      axios.get(`wiki.cgi?c=infoedit&t=${this.q.t}`).then((res) => {
+        const parsedHTML = parse(res.data);
 
-      if (parsedHTML.querySelector('[name="youtube"]')._attrs.value !== '') {
-        this.info.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="youtube"]')._attrs.value !== '') {
+          this.info.youtubeId = parsedHTML.querySelector('[name="youtube"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="niconico"]')._attrs.value !== '') {
-        this.info.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="niconico"]')._attrs.value !== '') {
+          this.info.nicoVideoId = parsedHTML.querySelector('[name="niconico"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="asin"]')._attrs.value !== '') {
-        this.info.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="asin"]')._attrs.value !== '') {
+          this.info.asin = parsedHTML.querySelector('[name="asin"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="itunes"]')._attrs.value !== '') {
-        this.info.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="itunes"]')._attrs.value !== '') {
+          this.info.itunes = parsedHTML.querySelector('[name="itunes"]')._attrs.value;
+        }
 
-      if (parsedHTML.querySelector('[name="jasrac"]')._attrs.value !== '') {
-        this.info.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
-      }
+        if (parsedHTML.querySelector('[name="jasrac"]')._attrs.value !== '') {
+          this.info.jasrac = parsedHTML.querySelector('[name="jasrac"]')._attrs.value;
+        }
+      }),
+    ]).then((res) => {
+      this.isLoading = false;
     });
   },
 
@@ -407,83 +427,11 @@ export default {
     //     this.$store.dispatch('autoScroll/stopAutoScroll');
     //   }
   },
+
+  metaInfo() {
+    return {
+      title: `${this.parseedChordpro.meta.title} - コード譜`,
+    };
+  },
 };
 </script>
-
-<style lang="sass">
-@import "~bulma/sass/utilities/_all"
-$navbar-breakpoint: $tablet
-@import "~bulma"
-@import "~buefy/src/scss/buefy"
-
-.♣
-  color: darkgreen
-.♠
-  color: mediumblue
-.♥
-  color: deeppink
-.♦
-  color: darkorange
-
-.current-url
-  max-width: 410px
-  width: 100%
-
-
-.chord-and-lyrics
-  display: inline-block
-  margin-right: 10px
-  margin-bottom: 5px
-  vertical-align: bottom
-  .chord-diagram
-    filter: invert(22%) sepia(100%) saturate(1164%) hue-rotate(181deg) brightness(100%) contrast(100%)
-
-    img
-      display: inline-block
-      transform: rotate(-90deg)
-  .chord
-    display: block
-    color: #3273dc
-    font-weight: bold
-    font-size: 14px
-    line-height: 20px
-    height: 20px
-  .lyrics
-    margin-left: 5px
-    display: block
-    font-weight: bold
-    line-height: 20px
-    height: 20px
-
-.empty-line
-  height: 2em
-
-.key
-  background: #f14668
-  border-radius: 2px
-  color: #fff
-  padding: 0 8px
-  font-weight: bold
-  display: inline-block
-  font-size: 14px
-  margin: 10px 0
-
-.comment
-  background: #e6e6e6
-  border-radius: 2px
-  padding: 0 8px
-  font-weight: bold
-  display: inline-block
-  font-size: 14px
-  margin: 10px 0
-
-.comment-italic
-  background: #e6e6e6
-  border-radius: 2px
-  padding: 0 8px
-  font-weight: bold
-  display: inline-block
-  font-size: 14px
-  margin: 10px 0
-  font-style: italic
-</style>

@@ -1,15 +1,28 @@
 <template lang="pug">
 #syncroom-plus-app
   router-view
+
+  b-button#form-button(type="is-warning", icon-left="exclamation-triangle", @click="openContactFrom")
+    strong 要望・不具合報告はこちら
+
   CustomFooter
 </template>
 
 <script>
 import CustomFooter from './components/CustomFooter';
+import ContactForm from './components/ContactForm';
 
 export default {
   components: {
     CustomFooter,
+  },
+  methods: {
+    openContactFrom() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: ContactForm,
+      });
+    },
   },
 };
 </script>
@@ -63,9 +76,9 @@ $navbar-breakpoint: $tablet
   height: 2em
 
 .key
-  background: #f14668
+  background: #feecf0
   border-radius: 2px
-  color: #fff
+  color: #cc0f35
   padding: 0 8px
   font-weight: bold
   display: inline-block
@@ -97,4 +110,12 @@ $navbar-breakpoint: $tablet
 
 .icon
   vertical-align: bottom
+
+.chordwiki-plus-song-page-tags
+  margin-bottom: 1em
+
+#form-button
+  position: fixed
+  bottom: 20px
+  right: 12px
 </style>
