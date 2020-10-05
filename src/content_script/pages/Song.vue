@@ -1,6 +1,6 @@
 <template lang="pug">
 #chordwiki-plus-song-page
-  CustomHeader
+  SongHeader
   .container
     .section
       h1.title
@@ -150,7 +150,7 @@
 import axios from 'axios';
 import { parse } from 'node-html-parser';
 
-import CustomHeader from '../components/CustomHeader';
+import SongHeader from '../components/SongHeader';
 import ChangeAutoScrollSpeedButton from '../components/ChangeAutoScrollSpeedButton';
 import ScrollAfterimage from '../components/ScrollAfterimage';
 import SongMenu from '../components/SongMenu';
@@ -164,7 +164,7 @@ import parseChordpro from '../../lib/parse_chordpro';
 
 export default {
   components: {
-    CustomHeader,
+    SongHeader,
     ChangeAutoScrollSpeedButton,
     ScrollAfterimage,
     SongMenu,
