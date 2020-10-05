@@ -35,7 +35,7 @@
     "moment": "^2.29.0",
     "moment-timezone": "^0.5.31",
     "node-html-parser": "^1.2.21",
-    "query-string": "^6.13.3",
+    "query-string": "^6.13.5",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
     "vue-meta": "^2.4.0",
