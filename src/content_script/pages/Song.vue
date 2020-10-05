@@ -24,7 +24,7 @@
         YouTubeEmbedPlayer(:youtube-id="youtubeId", v-if="youtubeId !== ''")
         NicoVideoEmbedPlayer(:nico-video-id="nicoVideoId", v-if="nicoVideoId !== ''")
 
-      b-button(size="is-small", type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=infoedit&t=${q.t}`", icon-left="pen") 動画を設定編集
+      b-button(size="is-small", type="is-text", tag="a", :href="`https://ja.chordwiki.org/wiki.cgi?c=infoedit&t=${q.t}`", icon-left="pen") 動画を設定・編集
 
       hr
 
