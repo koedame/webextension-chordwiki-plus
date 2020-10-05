@@ -9,7 +9,7 @@
         template(slot='start')
 
         template(slot='end')
-          b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
+          b-navbar-item(tag="router-link", :to='{name: "ranking"}')
             b-icon(icon="chart-line")
             span
               |
@@ -84,7 +84,7 @@
                 | {{song.subtitle}}
 
         .media
-          b-button(tag="a", href="https://ja.chordwiki.org/ranking.html", type="is-info is-light", expanded)
+          b-button(tag="router-link", :to="{name: 'ranking'}", type="is-info is-light", expanded)
             | もっと見る
 
     .section

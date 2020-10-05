@@ -12,7 +12,7 @@ b-navbar(fixed-top, shadow)
           .control
             b-button(size="is-small", @click="onSearch")
               | 検索
-    b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
+    b-navbar-item(tag="router-link", :to='{name: "ranking"}')
       b-icon(icon="chart-line", type="is-success")
       span
         |
