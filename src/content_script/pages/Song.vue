@@ -241,6 +241,8 @@ export default {
   },
 
   mounted() {
+    document.body.classList.add('has-navbar-fixed-top');
+
     this.q.t = this.$route.query.t;
     this.q.key = parseInt(this.$route.query.key, 10);
     this.q.symbol = this.$route.query.symbol;
