@@ -430,7 +430,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.parseedChordpro.meta.title} - コード譜`,
+      title: `${this.parseedChordpro.meta.title} - コード譜 | ChordWiki`,
     };
   },
 };
