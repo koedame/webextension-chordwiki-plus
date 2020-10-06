@@ -15,7 +15,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://ja.chordwiki.org/wiki.cgi?c=view*", "https://ja.chordwiki.org/"],
+      "matches": ["https://ja.chordwiki.org/wiki.cgi?c=view*", "https://ja.chordwiki.org/", "https://ja.chordwiki.org/ranking.html"],
       "js": ["content_script/app.js"]
     },
     {

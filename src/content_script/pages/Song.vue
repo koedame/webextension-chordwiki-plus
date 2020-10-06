@@ -1,6 +1,6 @@
 <template lang="pug">
 #chordwiki-plus-song-page
-  CustomHeader
+  SongHeader
   .container
     .section
       h1.title
@@ -150,7 +150,7 @@
 import axios from 'axios';
 import { parse } from 'node-html-parser';
 
-import CustomHeader from '../components/CustomHeader';
+import SongHeader from '../components/SongHeader';
 import ChangeAutoScrollSpeedButton from '../components/ChangeAutoScrollSpeedButton';
 import ScrollAfterimage from '../components/ScrollAfterimage';
 import SongMenu from '../components/SongMenu';
@@ -164,7 +164,7 @@ import parseChordpro from '../../lib/parse_chordpro';
 
 export default {
   components: {
-    CustomHeader,
+    SongHeader,
     ChangeAutoScrollSpeedButton,
     ScrollAfterimage,
     SongMenu,
@@ -241,6 +241,8 @@ export default {
   },
 
   mounted() {
+    document.body.classList.add('has-navbar-fixed-top');
+
     this.q.t = this.$route.query.t;
     this.q.key = parseInt(this.$route.query.key, 10);
     this.q.symbol = this.$route.query.symbol;
@@ -430,7 +432,7 @@ export default {
 
   metaInfo() {
     return {
-      title: `${this.parseedChordpro.meta.title} - コード譜`,
+      title: `${this.parseedChordpro.meta.title} - コード譜 | ChordWiki`,
     };
   },
 };
