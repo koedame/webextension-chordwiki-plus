@@ -7,7 +7,7 @@
       h1.title.is-5
         b-icon(icon="chart-line", type="is-success")
         |
-        | ランキング 1ページ目
+        | ランキング - 2ページ目
       .box(v-if="rankings.length === 0")
         .media(v-for="i in 30")
           figure.media-left
@@ -31,10 +31,6 @@
                 |
                 | {{song.subtitle}}
 
-      .level
-        .level-left
-        .level-right
-          b-button(type="is-info", tag="router-link", :to="{name: 'ranking101'}", icon-right="chevron-right") 次のページ
 </template>
 
 <script>
@@ -55,7 +51,7 @@ export default {
   },
   mounted() {
     // ランキングデータ
-    axios.get('/ranking.html').then((res) => {
+    axios.get('/ranking101.html').then((res) => {
       const parsedHTML = parse(res.data);
       const trTags = parsedHTML.querySelectorAll('.ranking tr');
       for (const trTag of trTags) {
@@ -83,7 +79,7 @@ export default {
 
   metaInfo() {
     return {
-      title: 'ランキング - 1ページ目 | ChordWiki',
+      title: 'ランキング - 2ページ目 | ChordWiki',
     };
   },
 };
