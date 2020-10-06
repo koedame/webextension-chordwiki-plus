@@ -17,11 +17,11 @@ b-navbar(fixed-top, shadow)
       span
         |
         | ランキング
-    b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
-      b-icon(icon="history", type="is-info")
+    b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=editlist')
+      b-icon(icon="th-list", type="is-warning")
       span
         |
-        | 閲覧履歴
+        | マイセットリスト
   template(slot='end')
     b-navbar-dropdown(label='楽曲メニュー', right)
       b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")
