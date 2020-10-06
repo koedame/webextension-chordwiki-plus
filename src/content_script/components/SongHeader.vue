@@ -12,16 +12,16 @@ b-navbar(fixed-top, shadow)
           .control
             b-button(size="is-small", @click="onSearch")
               | 検索
-    b-navbar-item(href='https://ja.chordwiki.org/ranking.html')
+    b-navbar-item(tag="router-link", :to='{name: "ranking"}')
       b-icon(icon="chart-line", type="is-success")
       span
         |
         | ランキング
-    b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
-      b-icon(icon="history", type="is-info")
+    b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=editlist')
+      b-icon(icon="th-list", type="is-warning")
       span
         |
-        | 閲覧履歴
+        | マイセットリスト
   template(slot='end')
     b-navbar-dropdown(label='楽曲メニュー', right)
       b-navbar-item(:href="`https://ja.chordwiki.org/wiki.cgi?c=edit&t=${queries.t}`")

@@ -1,5 +1,18 @@
 # CHANGELOGS
 
+## v2.3.0
+
+### 新規
+
+- ランキングページ対応
+
+### 依存パッケージ
+
+- copy-webpack-plugin from 6.1.1 to 6.2.0
+- mini-css-extract-plugin from 0.11.2 to 0.11.3
+- @vue/composition-api from 1.0.0-beta.14 to 1.0.0-beta.15
+- eslint-plugin-vue from 6.2.2 to 7.0.1
+
 ## v2.2.0
 
 ### 新規
