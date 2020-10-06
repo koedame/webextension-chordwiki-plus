@@ -19,12 +19,8 @@
             span
               |
               | マイセットリスト
-          b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history')
-            b-icon(icon="history")
-            span
-              |
-              | 閲覧履歴
           b-navbar-dropdown(label='その他', right)
+            b-navbar-item(href='https://ja.chordwiki.org/wiki.cgi?c=history') 閲覧履歴
             b-navbar-item(href='https://ja.chordwiki.org/new.html') 新規作成
             b-navbar-item(tag="router-link", :to='{name: "song", query: {c: "view", key: "0", symbol: "", t: "練習用"}}') 練習ページ
             b-navbar-item(href='https://ja.chordwiki.org/cd.html') コードブック
