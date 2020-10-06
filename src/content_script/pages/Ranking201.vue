@@ -7,13 +7,12 @@
       h1.title.is-5
         b-icon(icon="chart-line", type="is-success")
         |
-        | ランキング - 2ページ目
+        | ランキング - 3ページ目
 
       .level
         .level-left
-          b-button(type="is-info", tag="router-link", :to="{name: 'ranking'}", icon-left="chevron-left") 前のページ
+          b-button(type="is-info", tag="router-link", :to="{name: 'ranking101'}", icon-left="chevron-left") 前のページ
         .level-right
-          b-button(type="is-info", tag="router-link", :to="{name: 'ranking201'}", icon-right="chevron-right") 次のページ
 
       .box(v-if="rankings.length === 0")
         .media(v-for="i in 30")
@@ -40,9 +39,8 @@
 
       .level
         .level-left
-          b-button(type="is-info", tag="router-link", :to="{name: 'ranking'}", icon-left="chevron-left") 前のページ
+          b-button(type="is-info", tag="router-link", :to="{name: 'ranking101'}", icon-left="chevron-left") 前のページ
         .level-right
-          b-button(type="is-info", tag="router-link", :to="{name: 'ranking201'}", icon-right="chevron-right") 次のページ
 </template>
 
 <script>
@@ -63,7 +61,7 @@ export default {
   },
   mounted() {
     // ランキングデータ
-    axios.get('/ranking101.html').then((res) => {
+    axios.get('/ranking201.html').then((res) => {
       const parsedHTML = parse(res.data);
       const trTags = parsedHTML.querySelectorAll('.ranking tr');
       for (const trTag of trTags) {
@@ -91,7 +89,7 @@ export default {
 
   metaInfo() {
     return {
-      title: 'ランキング - 2ページ目 | ChordWiki',
+      title: 'ランキング - 3ページ目 | ChordWiki',
     };
   },
 };

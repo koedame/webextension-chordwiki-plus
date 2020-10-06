@@ -8,6 +8,12 @@
         b-icon(icon="chart-line", type="is-success")
         |
         | ランキング 1ページ目
+
+      .level
+        .level-left
+        .level-right
+          b-button(type="is-info", tag="router-link", :to="{name: 'ranking101'}", icon-right="chevron-right") 次のページ
+
       .box(v-if="rankings.length === 0")
         .media(v-for="i in 30")
           figure.media-left
