@@ -5,16 +5,16 @@
   b-button#form-button(type="is-warning", icon-left="exclamation-triangle", @click="openContactFrom")
     strong 要望・不具合報告はこちら
 
-  CustomFooter
+  Footer
 </template>
 
 <script>
-import CustomFooter from './components/CustomFooter';
+import Footer from './components/Footer';
 import ContactForm from './components/ContactForm';
 
 export default {
   components: {
-    CustomFooter,
+    Footer,
   },
   methods: {
     openContactFrom() {
