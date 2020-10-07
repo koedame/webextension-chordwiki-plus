@@ -20,6 +20,7 @@
           a(href="http://chordwiki.blog75.fc2.com/") ブログ
           a(href="http://jbbs.shitaraba.net/music/25009/") 掲示板
           a(href="https://ja.chordwiki.org/search2.html#gsc.tab=0") 横断検索
+          a(href="https://ja.chordwiki.org/wiki.cgi?c=view&key=0&symbol=&t=%E7%B7%B4%E7%BF%92%E7%94%A8") 練習用ページ
 
     hr
 
