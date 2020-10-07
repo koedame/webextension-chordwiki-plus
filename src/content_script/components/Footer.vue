@@ -2,25 +2,38 @@
 .chordwiki-plus-custom-footer
   footer.footer
     .container
-      .menu
-        .menu-label メニュー
-        .menu-list
-          router-link(:to="{name: 'home'}") ホーム
-          router-link(:to="{name: 'term-of-use'}") 利用規約
-          router-link(:to="{name: 'guideline'}") 編集ガイドライン
-          a(href="https://ja.chordwiki.org/help.html") ヘルプ
-          a(href="https://ja.chordwiki.org/setlists.cgi") 新着セットリスト
-          a(href="https://ja.chordwiki.org/wiki.cgi?c=deleted") 削除済み
-          a(href="https://ja.chordwiki.org/cd.html") コードブック
-          a(href="https://ja.chordwiki.org/random.cgi") ランダム表示
-          a(href="https://ja.chordwiki.org/wiki.cgi?c=editlist") マイセットリスト
-          a(href="https://ja.chordwiki.org/tagcloud.html") タグ一覧
-          a(href="https://ja.chordwiki.org/list/1.html") 楽曲一覧
-          a(href="https://ja.chordwiki.org/new.html") 新規作成
-          a(href="http://chordwiki.blog75.fc2.com/") ブログ
-          a(href="http://jbbs.shitaraba.net/music/25009/") 掲示板
-          a(href="https://ja.chordwiki.org/search2.html#gsc.tab=0") 横断検索
-          a(href="https://ja.chordwiki.org/wiki.cgi?c=view&key=0&symbol=&t=%E7%B7%B4%E7%BF%92%E7%94%A8") 練習用ページ
+      .columns
+        .column
+          .menu
+            .menu-label メインメニュー
+            .menu-list
+              router-link(:to="{name: 'home'}") ホーム
+              a(href="https://ja.chordwiki.org/wiki.cgi?c=editlist") マイセットリスト
+              a(href="https://ja.chordwiki.org/list/1.html") 楽曲一覧
+              a(href="https://ja.chordwiki.org/tagcloud.html") タグ一覧
+              a(href="https://ja.chordwiki.org/setlists.cgi") 新着セットリスト
+              a(href="https://ja.chordwiki.org/new.html") 新規作成
+              a(href="https://ja.chordwiki.org/cd.html") コードブック
+
+        .column
+          .menu
+            .menu-label 外部リンク
+            .menu-list
+              a(href="http://chordwiki.blog75.fc2.com/", target="_blank", rel="noopener") ブログ
+              a(href="http://jbbs.shitaraba.net/music/25009/", target="_blank", rel="noopener") 掲示板
+              a(href="https://twitter.com/chordwiki", target="_blank", rel="noopener") Twitter
+
+        .column
+          .menu
+            .menu-label その他
+            .menu-list
+              router-link(:to="{name: 'term-of-use'}") 利用規約
+              router-link(:to="{name: 'guideline'}") 編集ガイドライン
+              a(href="https://ja.chordwiki.org/help.html") ヘルプ
+              a(href="https://ja.chordwiki.org/random.cgi") ランダム表示
+              a(href="https://ja.chordwiki.org/wiki.cgi?c=deleted") 削除済み
+              a(href="https://ja.chordwiki.org/search2.html#gsc.tab=0") 横断検索
+              a(href="https://ja.chordwiki.org/wiki.cgi?c=view&key=0&symbol=&t=%E7%B7%B4%E7%BF%92%E7%94%A8") 練習用ページ
 
     hr
 
