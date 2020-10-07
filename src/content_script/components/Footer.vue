@@ -6,7 +6,7 @@
         .menu-label メニュー
         .menu-list
           router-link(:to="{name: 'home'}") ホーム
-          a(href="https://ja.chordwiki.org/TermOfUse.html") 利用規約
+          router-link(:to="{name: 'term-of-use'}") 利用規約
           a(href="https://ja.chordwiki.org/Guideline.html") 編集ガイドライン
           a(href="https://ja.chordwiki.org/help.html") ヘルプ
           a(href="https://ja.chordwiki.org/setlists.cgi") 新着セットリスト
