@@ -386,11 +386,19 @@ export default {
     },
   },
   methods: {
+    forceBlur() {
+      // フォーカスされるとされると矢印キーで操作できてしまいUXが低下するのでフォーカスをはずす
+      setTimeout(() => {
+        document.activeElement.blur();
+      }, 250);
+    },
     onChangeChordDiagram(value) {
       this.$store.dispatch('config/setChordDiagram', value);
+      this.forceBlur();
     },
     onChangeScrollGuide(value) {
       this.$store.dispatch('config/setScrollGuide', value);
+      this.forceBlur();
     },
     copyUrl() {
       this.$clipboard(this.currentUrl);
@@ -409,6 +417,7 @@ export default {
     onChangeQueries() {
       this.$router.replace({ name: 'song', query: this.q });
       this.currentUrl = location.href;
+      this.forceBlur();
     },
 
     sanitizeHTML(text) {
