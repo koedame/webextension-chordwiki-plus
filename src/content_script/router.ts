@@ -44,6 +44,11 @@ export default new Router({
       component: loadView('TermOfUse'),
     },
     {
+      path: '/Guideline.html',
+      name: 'guideline',
+      component: loadView('Guideline'),
+    },
+    {
       path: '/wiki.cgi',
       // 参考: https://stackoverflow.com/questions/44797824/matching-query-param-in-vue-routes
       beforeEnter(to, from, next) {
