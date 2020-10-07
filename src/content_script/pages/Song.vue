@@ -153,7 +153,6 @@ import { parse } from 'node-html-parser';
 import SongHeader from '../components/SongHeader';
 import ChangeAutoScrollSpeedButton from '../components/ChangeAutoScrollSpeedButton';
 import ScrollAfterimage from '../components/ScrollAfterimage';
-import SongMenu from '../components/SongMenu';
 import YouTubeEmbedPlayer from '../components/YouTubeEmbedPlayer';
 import NicoVideoEmbedPlayer from '../components/NicoVideoEmbedPlayer';
 import Metronome from '../components/Metronome';
@@ -167,7 +166,6 @@ export default {
     SongHeader,
     ChangeAutoScrollSpeedButton,
     ScrollAfterimage,
-    SongMenu,
     YouTubeEmbedPlayer,
     NicoVideoEmbedPlayer,
     Metronome,
