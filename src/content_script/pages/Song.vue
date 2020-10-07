@@ -250,7 +250,10 @@ export default {
     Promise.all([
       // タグ
       axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
-        this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+        const tagsText = parse(res.data).querySelector('textarea').text;
+        if (tagsText.length !== 0) {
+          this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+        }
       }),
 
       // chordpro
