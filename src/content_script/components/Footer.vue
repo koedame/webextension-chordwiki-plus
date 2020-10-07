@@ -33,18 +33,30 @@
 
     .content.has-text-centered
       p
-        | Copyright (C) 2006-{{currentYear}} ChordWiki and
+        b-tag(type="is-info")
+          | ChordWiki Plus Version {{ version }}
+
+      p
+        strong ChordWiki Plus
         |
-        a(href="http://worris3.tumblr.com/works")
-          | worris
-        | . Some Rights Reserved.
+        | は
+        |
+        a(href='https://twitter.com/koedamedev', target="_blank", rel="noopener noreferrer")
+          strong
+            | 肥溜め
+          | @koedamedev
+        |
+        | が管理・運用しています。
 </template>
 
 <script>
+const browser = require('webextension-polyfill');
+
 export default {
   data() {
     return {
       currentYear: new Date().getFullYear(),
+      version: browser.runtime.getManifest().version,
     };
   },
 };
