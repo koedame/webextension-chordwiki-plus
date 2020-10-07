@@ -22,13 +22,13 @@ export default {
     };
   },
   mounted() {
-    axios.get('/TermOfUse.html').then((res) => {
+    axios.get('/Guideline.html').then((res) => {
       this.originalHtml = parse(res.data).querySelector('body').innerHTML;
     });
   },
   metaInfo() {
     return {
-      title: '利用規約 | ChordWiki',
+      title: '編集ガイドライン | ChordWiki',
     };
   },
 };
