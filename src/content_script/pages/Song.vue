@@ -101,7 +101,11 @@
           b-switch(v-model="$store.state.config.scrollGuide", type="is-info", size="is-small", @input="onChangeScrollGuide")
             | スクロールガイド
 
-      #chordwiki-plus-lyrics
+        .control
+          b-switch(v-model="$store.state.config.styleBold", type="is-info", size="is-small", @input="onChangeStyleBold")
+            | 太字
+
+      #chordwiki-plus-lyrics(:class="{bold: $store.state.config.styleBold}")
         b-skeleton(v-if="isLoading", size="is-medium", :count="100")
         template(v-else)
           div(v-for="line in transeposedParseChordproLines")
@@ -398,6 +402,10 @@ export default {
     },
     onChangeScrollGuide(value) {
       this.$store.dispatch('config/setScrollGuide', value);
+      this.forceBlur();
+    },
+    onChangeStyleBold(value) {
+      this.$store.dispatch('config/setStyleBold', value);
       this.forceBlur();
     },
     copyUrl() {

@@ -47,6 +47,9 @@ $navbar-breakpoint: $tablet
   width: 100%
 
 
+.bold
+  font-weight: bold
+
 .chord-and-lyrics
   display: inline-block
   margin-right: 10px
@@ -61,14 +64,12 @@ $navbar-breakpoint: $tablet
   .chord
     display: block
     color: #3273dc
-    font-weight: bold
     font-size: 14px
     line-height: 20px
     height: 20px
   .lyrics
     margin-left: 5px
     display: block
-    font-weight: bold
     line-height: 20px
     height: 20px
 
@@ -80,7 +81,6 @@ $navbar-breakpoint: $tablet
   border-radius: 2px
   color: #cc0f35
   padding: 0 8px
-  font-weight: bold
   display: inline-block
   font-size: 14px
   margin: 10px 0
@@ -89,7 +89,6 @@ $navbar-breakpoint: $tablet
   background: #e6e6e6
   border-radius: 2px
   padding: 0 8px
-  font-weight: bold
   display: inline-block
   font-size: 14px
   margin: 10px 0
@@ -98,7 +97,6 @@ $navbar-breakpoint: $tablet
   background: #e6e6e6
   border-radius: 2px
   padding: 0 8px
-  font-weight: bold
   display: inline-block
   font-size: 14px
   margin: 10px 0
