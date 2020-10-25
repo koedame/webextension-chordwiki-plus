@@ -24,12 +24,10 @@ export default {
       this.$store.dispatch('search/setKeyword', decodeURIComponent(location.hash.replace(/#gsc\.q=/, '')));
     }
 
-    var cx = 'partner-pub-6362118305215071:5650785010';
-    var gcse = document.createElement('script');
+    const gcse = document.createElement('script');
     gcse.type = 'text/javascript';
     gcse.async = true;
-    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//www.google.com/cse/cse.js?cx=partner-pub-6362118305215071:5650785010';
-    var s = document.getElementsByTagName('script')[0];
+    gcse.src = 'https://www.google.com/cse/cse.js?cx=partner-pub-6362118305215071:5650785010';
     document.head.appendChild(gcse);
   },
 
