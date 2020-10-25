@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     onSearch() {
-      location.href = `https://ja.chordwiki.org/search.html#gsc.q=${this.searchKeyword}`;
+      location.href = `https://ja.chordwiki.org/search.html#gsc.q=${encodeURIComponent(this.searchKeyword)}`;
     },
   },
 };
