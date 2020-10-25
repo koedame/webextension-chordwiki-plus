@@ -7,7 +7,6 @@ b-navbar(fixed-top, shadow)
     b-navbar-item(tag="div")
       form(@submit.prevent="onSearch")
         b-field
-          //- TODO: 検索ワードを維持したい
           b-input.search-input(placeholder="キーワードを入力", type='search', size="is-small", v-model="searchKeyword", icon="search")
           .control
             b-button(size="is-small", @click="onSearch")
@@ -52,6 +51,8 @@ export default {
     };
   },
   mounted() {
+    this.searchKeyword = this.$store.state.search.keyword;
+
     const parsedQueries = queryString.parse(location.search);
     this.queries.c = parsedQueries.c;
     this.queries.t = parsedQueries.t;
@@ -60,7 +61,9 @@ export default {
   },
   methods: {
     onSearch() {
-      location.href = `https://ja.chordwiki.org/search.html#gsc.q=${encodeURIComponent(this.searchKeyword)}`;
+      this.$store.dispatch('search/setKeyword', this.searchKeyword).then(() => {
+        this.$router.push({ name: 'search', hash: `#gsc.q=${encodeURIComponent(this.$store.state.search.keyword)}` });
+      });
     },
   },
 };

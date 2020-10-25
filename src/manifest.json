@@ -22,7 +22,8 @@
         "https://ja.chordwiki.org/ranking101.html",
         "https://ja.chordwiki.org/ranking201.html",
         "https://ja.chordwiki.org/TermOfUse.html",
-        "https://ja.chordwiki.org/Guideline.html"
+        "https://ja.chordwiki.org/Guideline.html",
+        "https://ja.chordwiki.org/search.html"
       ],
       "js": ["content_script/app.js"]
     },

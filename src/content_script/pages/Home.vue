@@ -39,7 +39,6 @@
       .search_box_wrap
         form(@submit.prevent="onSearch")
           b-field
-            //- TODO: 検索ワードを維持したい
             b-input.search-input(placeholder="キーワードを入力", type='search', v-model="searchKeyword", icon="search", size="is-small")
             .control
               b-button(@click="onSearch", size="is-small")
@@ -123,6 +122,7 @@ export default {
     };
   },
   mounted() {
+    this.searchKeyword = this.$store.state.search.keyword;
     // 楽曲数
     axios.get('/count.js').then((res) => {
       this.songCount = parseInt(res.data.match(/document.write\('([0-9]+?)'\)/)[1], 10).toLocaleString();
@@ -166,7 +166,9 @@ export default {
   },
   methods: {
     onSearch() {
-      location.href = `https://ja.chordwiki.org/search.html#gsc.q=${encodeURIComponent(this.searchKeyword)}`;
+      this.$store.dispatch('search/setKeyword', this.searchKeyword).then(() => {
+        this.$router.push({ name: 'search', hash: `#gsc.q=${encodeURIComponent(this.$store.state.search.keyword)}` });
+      });
     },
     songLinkTo(link) {
       axios.get(link).then((res) => {
