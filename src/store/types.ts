@@ -12,3 +12,7 @@ export interface AutoScrollState {
   scrollSpeed: number;
   timer: any;
 }
+
+export interface SearchState {
+  keyword: string;
+}
