@@ -1,5 +1,36 @@
 # CHANGELOGS
 
+## v2.4.0
+
+### 新規
+
+- 検索結果ページ対応
+- 利用規約ページ対応
+- 編集ガイドラインページ対応
+- 検索ワード保持
+- 太字切り替え機能
+
+### 変更
+
+- 検索キーワードの記号対応
+- タグが 0 個のときの不具合を修正
+- フッターにリンクを追加
+- フッターのテキストを変更
+- 自動フォーカスの強制解除
+
+### 依存パッケージ
+
+- @sentry/apm from 5.24.2 to 5.27.1
+- @sentry/integrations from 5.24.2 to 5.26.0
+- @vue/composition-api from 1.0.0-beta.15 to 1.0.0-beta.17
+- copy-webpack-plugin from 6.2.0 to 6.2.1
+- eslint from 6.8.0 to 7.12.0
+- file-loader from 6.1.0 to 6.1.1
+- moment from 2.29.0 to 2.29.1
+- node-html-parser from 1.2.21 to 1.3.1
+- sass-loader from 10.0.2 to 10.0.3
+- webpack-cli from 3.3.12 to 4.1.0
+
 ## v2.3.0
 
 ### 新規
