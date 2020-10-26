@@ -6,6 +6,7 @@ import { ConfigState, RootState } from '../types';
 const state: ConfigState = {
   chordDiagram: false,
   scrollGuide: true,
+  styleBold: true,
 };
 
 const getters: GetterTree<ConfigState, RootState> = {
@@ -14,6 +15,9 @@ const getters: GetterTree<ConfigState, RootState> = {
   },
   scrollGuide: (state) => {
     return state.scrollGuide;
+  },
+  styleBold: (state) => {
+    return state.styleBold;
   },
 };
 
@@ -36,6 +40,15 @@ const mutations: MutationTree<ConfigState> = {
           state.scrollGuide = configScrollGuide;
         }
       });
+
+    browser.storage.local
+      .get('configStyleBold')
+      //@ts-ignore
+      .then(({ configStyleBold }) => {
+        if (typeof configStyleBold !== 'undefined') {
+          state.styleBold = configStyleBold;
+        }
+      });
   },
   setChordDiagram: (state, value: boolean) => {
     browser.storage.local
@@ -55,6 +68,15 @@ const mutations: MutationTree<ConfigState> = {
         state.scrollGuide = value;
       });
   },
+  setStyleBold: (state, value: boolean) => {
+    browser.storage.local
+      .set({
+        configStyleBold: value,
+      })
+      .then(() => {
+        state.styleBold = value;
+      });
+  },
 };
 
 const actions: ActionTree<ConfigState, RootState> = {
@@ -63,6 +85,9 @@ const actions: ActionTree<ConfigState, RootState> = {
   },
   setScrollGuide({ commit }, value: boolean) {
     commit('setScrollGuide', value);
+  },
+  setStyleBold({ commit }, value: boolean) {
+    commit('setStyleBold', value);
   },
   restoreFromLocalStorage({ commit }) {
     commit('restoreFromLocalStorage');

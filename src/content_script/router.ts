@@ -39,6 +39,21 @@ export default new Router({
       component: loadView('Ranking201'),
     },
     {
+      path: '/TermOfUse.html',
+      name: 'term-of-use',
+      component: loadView('TermOfUse'),
+    },
+    {
+      path: '/Guideline.html',
+      name: 'guideline',
+      component: loadView('Guideline'),
+    },
+    {
+      path: '/search.html',
+      name: 'search',
+      component: loadView('Search'),
+    },
+    {
       path: '/wiki.cgi',
       // 参考: https://stackoverflow.com/questions/44797824/matching-query-param-in-vue-routes
       beforeEnter(to, from, next) {

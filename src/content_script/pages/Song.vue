@@ -101,7 +101,11 @@
           b-switch(v-model="$store.state.config.scrollGuide", type="is-info", size="is-small", @input="onChangeScrollGuide")
             | スクロールガイド
 
-      #chordwiki-plus-lyrics
+        .control
+          b-switch(v-model="$store.state.config.styleBold", type="is-info", size="is-small", @input="onChangeStyleBold")
+            | 太字
+
+      #chordwiki-plus-lyrics(:class="{bold: $store.state.config.styleBold}")
         b-skeleton(v-if="isLoading", size="is-medium", :count="100")
         template(v-else)
           div(v-for="line in transeposedParseChordproLines")
@@ -153,7 +157,6 @@ import { parse } from 'node-html-parser';
 import SongHeader from '../components/SongHeader';
 import ChangeAutoScrollSpeedButton from '../components/ChangeAutoScrollSpeedButton';
 import ScrollAfterimage from '../components/ScrollAfterimage';
-import SongMenu from '../components/SongMenu';
 import YouTubeEmbedPlayer from '../components/YouTubeEmbedPlayer';
 import NicoVideoEmbedPlayer from '../components/NicoVideoEmbedPlayer';
 import Metronome from '../components/Metronome';
@@ -167,7 +170,6 @@ export default {
     SongHeader,
     ChangeAutoScrollSpeedButton,
     ScrollAfterimage,
-    SongMenu,
     YouTubeEmbedPlayer,
     NicoVideoEmbedPlayer,
     Metronome,
@@ -250,7 +252,10 @@ export default {
     Promise.all([
       // タグ
       axios.get(`wiki.cgi?c=tagedit&t=${this.q.t}`).then((res) => {
-        this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+        const tagsText = parse(res.data).querySelector('textarea').text;
+        if (tagsText.length !== 0) {
+          this.tags = parse(res.data).querySelector('textarea').text.split('\n');
+        }
       }),
 
       // chordpro
@@ -385,11 +390,23 @@ export default {
     },
   },
   methods: {
+    forceBlur() {
+      // フォーカスされるとされると矢印キーで操作できてしまいUXが低下するのでフォーカスをはずす
+      setTimeout(() => {
+        document.activeElement.blur();
+      }, 250);
+    },
     onChangeChordDiagram(value) {
       this.$store.dispatch('config/setChordDiagram', value);
+      this.forceBlur();
     },
     onChangeScrollGuide(value) {
       this.$store.dispatch('config/setScrollGuide', value);
+      this.forceBlur();
+    },
+    onChangeStyleBold(value) {
+      this.$store.dispatch('config/setStyleBold', value);
+      this.forceBlur();
     },
     copyUrl() {
       this.$clipboard(this.currentUrl);
@@ -408,6 +425,7 @@ export default {
     onChangeQueries() {
       this.$router.replace({ name: 'song', query: this.q });
       this.currentUrl = location.href;
+      this.forceBlur();
     },
 
     sanitizeHTML(text) {

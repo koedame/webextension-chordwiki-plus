@@ -29,6 +29,11 @@ export default {
           this.$store.dispatch('autoScroll/runAutoScroll');
         });
       });
+
+      // UXが低下するのでフォーカスをはずす
+      setTimeout(() => {
+        document.activeElement.blur();
+      }, 250);
     },
     stop() {
       this.$store.dispatch('autoScroll/stopAutoScroll');
