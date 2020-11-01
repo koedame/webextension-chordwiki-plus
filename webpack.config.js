@@ -108,7 +108,6 @@ const config = {
     ],
   },
   plugins: [
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.DefinePlugin({
       global: 'window',
     }),
