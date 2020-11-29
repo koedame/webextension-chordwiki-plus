@@ -28,7 +28,7 @@
     "axios": "^0.21.0",
     "buefy": "^0.9.3",
     "node-html-parser": "^2.0.0",
-    "query-string": "^6.13.5",
+    "query-string": "^6.13.7",
     "v-clipboard": "^2.2.3",
     "vue": "^2.6.12",
     "vue-meta": "^2.4.0",
