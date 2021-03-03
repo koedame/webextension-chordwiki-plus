@@ -67,7 +67,7 @@
     "node-sass": "^4.9.3",
     "prettier": "^2.1.2",
     "pretty-quick": "^3.0.2",
-    "pug": "^3.0.0",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "sass-loader": "^10.0.4",
     "ts-loader": "^8.0.11",
