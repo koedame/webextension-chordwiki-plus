@@ -33,7 +33,7 @@
     "vue": "^2.6.12",
     "vue-meta": "^2.4.0",
     "vue-router": "^3.4.7",
-    "vuex": "^3.0.1",
+    "vuex": "^3.6.2",
     "webextension-polyfill": "^0.6.0"
   },
   "devDependencies": {
