@@ -55,9 +55,9 @@ $navbar-breakpoint: $tablet
   margin-right: 10px
   margin-bottom: 5px
   vertical-align: bottom
+  position: relative
   .chord-diagram
     filter: invert(22%) sepia(100%) saturate(1164%) hue-rotate(181deg) brightness(100%) contrast(100%)
-
     img
       display: inline-block
       transform: rotate(-90deg)
@@ -72,7 +72,14 @@ $navbar-breakpoint: $tablet
     display: block
     line-height: 20px
     height: 20px
-
+  .no-diagram
+    position: absolute
+    top: 32px
+    left: 0px
+    color: #000000
+    margin: 0 auto
+    text-shadow: 1px 1px 4px #000000
+    font-size: 11.5pt
 .empty-line
   height: 2em
 
