@@ -115,6 +115,8 @@
                   img(:src="data.chordDiagram")
                 span.chord(v-else)
                   | {{data.chord}}
+                span.chord.no-diagram(v-if="$store.state.config.chordDiagram&&!existChordDiagram(data.chordDiagram)")
+                  | {{data.chord}}
                 span.lyrics(v-html="sanitizeHTML(data.lyrics)")
 
             template(v-else-if="line.type === 'comment'")
@@ -161,6 +163,7 @@ import YouTubeEmbedPlayer from '../components/YouTubeEmbedPlayer';
 import NicoVideoEmbedPlayer from '../components/NicoVideoEmbedPlayer';
 import Metronome from '../components/Metronome';
 
+import chordDiagrams from '../../lib/chordDiagrams';
 import transeposeTables from '../../lib/transepose_tables';
 import notationTables from '../../lib/notation_tables';
 import parseChordpro from '../../lib/parse_chordpro';
@@ -430,6 +433,12 @@ export default {
 
     sanitizeHTML(text) {
       return text.replace(/<script>/g, '&ltscript&gt').replace(/<\/script>/g, '&lt/script&gt');
+    },
+
+    existChordDiagram(chord) {
+      console.log(chord);
+      if (chord) return chordDiagrams.includes(chord.substr(4));
+      return false;
     },
 
     //   toggleAutoScroll() {
